@@ -1,6 +1,6 @@
-baseurl = "https://username.github.io"
+baseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = "Beautiful Hugo"
+title = "SBACKP"
 theme = "beautifulhugo"
 pygmentsStyle = "trac"
 pygmentsUseClasses = true
@@ -12,8 +12,8 @@ pygmentsCodefencesGuessSyntax = true
 #googleAnalytics = "XXX"
 
 [Params]
-#  homeTitle = "Beautiful Hugo Theme" # Set a different text for the header on the home page
-  subtitle = "Build a beautiful and simple website in minutes"
+#  homeTitle = "SBACKP" # Set a different text for the header on the home page
+  subtitle = "Web Analytics and MarTech Blog"
   mainSections = ["post","posts"]
   logo = "img/avatar-icon.png" # Expecting square dimensions
   favicon = "img/favicon.ico"
@@ -27,6 +27,7 @@ pygmentsCodefencesGuessSyntax = true
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
+  since = "2023"
 #  hideAuthor = true
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 
@@ -44,16 +45,16 @@ pygmentsCodefencesGuessSyntax = true
 
 [Author]
   # Set only your "username" for default hosts and full URLs otherwise (e.g., "https://MyGitLab.org/username")
-  name = "Some Person"
-  website = "yourwebsite.com"
-  email = "youremail@domain.com"
+  name = "SBACKP"
+  website = "https://sbackp.com"
+  email = "sbackp@gmail.com"
   facebook = "username"
-  github = "username"
-  gitlab = "username"
+  github = "sbackp"
+  gitlab = "sbackp"
   bitbucket = "username"
-  twitter = "username"
-  reddit = "username"
-  linkedin = "username"
+  twitter = "sbackp"
+  reddit = "sbackp"
+  linkedin = "sbackp"
   xing = "username"
   stackoverflow = "users/XXXXXXX/username"
   snapchat = "username"
