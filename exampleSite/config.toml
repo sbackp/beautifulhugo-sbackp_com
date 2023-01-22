@@ -1,4 +1,4 @@
-baseURL = "https://sbackp.com"
+BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
 title = "SBACKP"
 theme = "beautifulhugo"
