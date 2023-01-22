@@ -17,6 +17,7 @@
   "publisher" : {
     "@type": "Organization",
     "name" : "{{ .Site.BaseURL }}",
+    "testURL" : "{{ .Site.Params.TestURL }}",
     "logo" : {
         "@type" : "ImageObject",
         "url" : "{{ .Site.Params.logo | absURL }}",
