@@ -148,12 +148,12 @@ icon = "fab fa-twitter"
 #title = "kaggle"
 #icon = "fab fa-kaggle"
 
-[[social_icons]]
-id = "mastodon"
-url = "https://%s"
-title = "Mastodon"
-icon = "fab fa-mastodon"
-rel = "me"
+#[[social_icons]]
+#id = "mastodon"
+#url = "https://%s"
+#title = "Mastodon"
+#icon = "fab fa-mastodon"
+#rel = "me"
 
 #[[social_icons]]
 #id = "weibo"
