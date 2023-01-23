@@ -4,6 +4,6 @@
     "@type": "WebSite",
     "name": "{{ .Site.Title }}",
     {{ with .Site.Params.alternatePageName }}"alternateName": "{{ . }}",{{ end }}
-    "url": "{{ .Site.BaseURL }}"
+    "url": "{{ .Site.Params.baseURL }}"
 }
 </script>
