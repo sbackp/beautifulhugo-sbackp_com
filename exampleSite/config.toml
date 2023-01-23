@@ -1,6 +1,6 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = "SBACKP"
+title = ""
 theme = "beautifulhugo"
 pygmentsStyle = "trac"
 pygmentsUseClasses = true
@@ -70,7 +70,7 @@ pygmentsCodefencesGuessSyntax = true
   telegram = "username"
   500px = "username"
   codepen = "username"
-  mastodon = "url"
+  mastodon = "https://masto.measure.chat/@sbackp"
   kaggle = "username"
   weibo = "username"
   slack = "username"
