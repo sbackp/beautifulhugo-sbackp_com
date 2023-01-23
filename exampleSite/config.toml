@@ -1,6 +1,6 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = ""
+title = "SBACKP"
 theme = "beautifulhugo"
 pygmentsStyle = "trac"
 pygmentsUseClasses = true
@@ -12,8 +12,8 @@ pygmentsCodefencesGuessSyntax = true
 #googleAnalytics = "XXX"
 
 [Params]
-  homeTitle = "" # Set a different text for the header on the home page
-  subtitle = "Web Analytics and MarTech Blog"
+  homeTitle = "Web Analytics and Martech" # Set a different text for the header on the home page
+  subtitle = "Half thought-out ideas to made up problems"
   mainSections = ["post","posts"]
   logo = "img/avatar-icon.png" # Expecting square dimensions
   favicon = "img/favicon.ico"
