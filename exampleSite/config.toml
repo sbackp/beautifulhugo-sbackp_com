@@ -1,6 +1,6 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = ""
+title = "Web Analytics and MarTech | BACKP Blog"
 theme = "beautifulhugo"
 pygmentsStyle = "trac"
 pygmentsUseClasses = true
