@@ -11,21 +11,21 @@
   
       <!-- Facebook -->
       <li>
-        <a href="//www.facebook.com/sharer/sharer.php?u={{ .Permalink }}" target="_blank" title="Share on Facebook">
+        <a href="//www.facebook.com/sharer/sharer.php?u={{ .Site.Params.baseURL }}{{ .Permalink }}" target="_blank" title="Share on Facebook">
           <i class="fab fa-facebook"></i>
         </a>
       </li>
   
       <!-- Reddit -->
       <li>
-        <a href="//reddit.com/submit?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" title="Share on Reddit">
+        <a href="//reddit.com/submit?url={{ .Site.Params.baseURL }}{{ .Permalink }}&amp;title={{ .Title }}" target="_blank" title="Share on Reddit">
           <i class="fab fa-reddit"></i>
         </a>
       </li>
   
       <!-- LinkedIn -->
       <li>
-        <a href="//www.linkedin.com/shareArticle?url={{ .Permalink }}&amp;title={{ .Title }}" target="_blank" title="Share on LinkedIn">
+        <a href="//www.linkedin.com/sharing/share-offsite?url={{ .Site.Params.baseURL }}{{ .Permalink }}&amp;title={{ .Title }}" target="_blank" title="Share on LinkedIn">
           <i class="fab fa-linkedin"></i>
         </a>
       </li>
