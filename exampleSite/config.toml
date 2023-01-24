@@ -12,10 +12,10 @@ pygmentsCodefencesGuessSyntax = true
 #googleAnalytics = "XXX"
 
 [Params]
-  homeTitle = "Web Analytics and Martech" # Set a different text for the header on the home page
+  homeTitle = "Web Analytics and MarTech" # Set a different text for the header on the home page
   subtitle = "Half thought-out ideas to made up problems"
   mainSections = ["post","posts"]
-  logo = "img/avatar-icon.png" # Expecting square dimensions
+  logo = "img/239398897_modern__Simple_and_minimalistic_logo_in_white_of_a_buck.png" # Expecting square dimensions
   favicon = "img/favicon.ico"
   dateFormat = "January 2, 2006"
   commit = false
