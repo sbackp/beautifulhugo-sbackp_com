@@ -5,7 +5,7 @@
   {{ if ne $datestr $lastmodstr }}
     &nbsp;{{ $lastmodstr | i18n "lastModified"  }}
   {{ end }}
-  {{ if .Site.Params.readingTime }}
+  <!--{{ if .Site.Params.readingTime }}
     &nbsp;|&nbsp;<i class="fas fa-clock"></i>&nbsp;{{ i18n "readingTime"}}{{ .ReadingTime }}&nbsp;{{ i18n "readTime" }}
   {{ end }}
   {{ if .Site.Params.wordCount }}
@@ -17,7 +17,7 @@
     {{ else }}
       &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;{{ .Site.Author.name | safeHTML }}
     {{ end }}
-  {{ end }}
+  {{ end }}-->
   {{- if .Site.Params.staticman -}}
     &nbsp;|&nbsp;<i class="fas fa-comment"></i>&nbsp;
     {{ $slug := replace .RelPermalink "/" "" }}
