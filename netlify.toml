@@ -11,5 +11,5 @@
 [[headers]]
   for = "/*"
   [headers.values]
-    # Content-Security-Policy =  "frame-ancestors 'self'"
+    Content-Security-Policy =  "frame-ancestors 'self' https://google.com"
     x-frame-options = "DENY"
