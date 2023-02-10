@@ -5,3 +5,44 @@ Or you can delete these file if you don't need it.
 <!-- for example, you could include some js libraries:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.js" integrity="sha256-HdIuWBZj4eftihsoDCJoMYjZi6aNVaw7YlUpzKT3ZxI=" crossorigin="anonymous"></script>
 -->
+
+  <script>
+    (function () {
+      // Create the iframe to communicate with.
+      var iframeContainer = document.getElementById('iframeContainer');
+      var iframe = document.createElement('iframe');
+      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/';
+      iframe.width='500';
+      iframe.height='100';
+      iframeContainer.appendChild(iframe);
+
+      window.addEventListener('message', function (event) {
+        // Verify the message's origin before trusting it.
+        if (event.origin !== 'https://idyllic-kulfi-7c87be.netlify.app') {
+          // Handle message from an evil domain.
+          alert('Message event received from bad origin');
+        }
+        else {
+          // Handle message from a valid domain.
+          document.getElementById('dataRetrieved').textContent = event.data;
+          document.getElementById('messageOrigin').textContent = event.origin;
+        }
+      });
+    })();
+
+    (function () {
+      var title = document.getElementById('title');
+      var otherParentLink = document.getElementById('otherParentLink');
+      var isGood = window.location.host === 'https://sbackp.com';
+      title.textContent = (isGood ? '' : 'Evil ') + 'Parent Site'
+      otherParentLink.innerHTML = [
+        '<a href="http://',
+        isGood ? 'evil-' : '',
+        'sbackp.com">Try ',
+        isGood ? 'Evil' : 'Good',
+        ' Parent</a>'
+      ].join('');
+    })();
+  
+  console.log('test');
+  </script>
