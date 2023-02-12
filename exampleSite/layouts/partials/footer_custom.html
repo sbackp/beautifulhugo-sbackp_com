@@ -46,7 +46,7 @@ Or you can delete these file if you don't need it.
 
         consents_approved = JSON.stringify(['necessary','statistics']);
         consents_denied = JSON.stringify(['marketing','functional']);
-        iframe.src = iframe.src + '&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
+        iframe.src = iframe.src + '&event=update&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
       })
     })();
   
