@@ -20,19 +20,20 @@ Or you can delete these file if you don't need it.
     <button id="updateIframe">update iframe</button>
   </form>
 
-  <!--<div id="otherParentLink"></div>-->
-
   <script>
     (function () {
+      
+      
+      // The values needed for the iframe to set or update consent
+      let referrer = document.location.href;
+      let csp_website_id = 'test123123';
+      let csp_websites = ['sbackp.com','sbackp.dk'].join(',');
+      
       // Create the iframe to communicate with.
       let iframeContainer = document.getElementById('iframeContainer');
       let iframe = document.createElement('iframe');
-      
-      let referrer = document.location.host;
-      let consentID = 'test123';
-      let consentDomains = ['sbackp.com','sbackp.dk'].join(',');
-      
-      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&consentid='+consentID+'&consentdomains='+consentDomains;
+
+      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites;;
       iframe.width='500px';
       iframe.height='100px';
       iframeContainer.appendChild(iframe);
