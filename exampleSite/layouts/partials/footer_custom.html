@@ -13,7 +13,7 @@ Or you can delete these file if you don't need it.
 
   <div id="iframeContainer">
     <h3>iFrame from other site (would likely be hidden in a real product):</h3>
-    <iframe src='https://idyllic-kulfi-7c87be.netlify.app/?referrer=https://sbackp.com' width = '500px' height = '100px'></iframe>
+    <!--<iframe src='https://idyllic-kulfi-7c87be.netlify.app/?referrer=https://sbackp.com' width = '500px' height = '100px'></iframe>-->
   </div>
 
 
@@ -22,12 +22,12 @@ Or you can delete these file if you don't need it.
   <script>
     (function () {
       // Create the iframe to communicate with.
-      /*var iframeContainer = document.getElementById('iframeContainer');
+      var iframeContainer = document.getElementById('iframeContainer');
       var iframe = document.createElement('iframe');
-      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/';
-      iframe.width='500';
-      iframe.height='100';
-      iframeContainer.appendChild(iframe);*/
+      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+document.location.href;
+      iframe.width='500px';
+      iframe.height='100px';
+      iframeContainer.appendChild(iframe);
 
       window.addEventListener('message', function (event) {
         // Verify the message's origin before trusting it.
