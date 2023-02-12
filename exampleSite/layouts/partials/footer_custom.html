@@ -14,9 +14,7 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-    (function () {
-      
-      
+    (function () {      
       // The values needed for the iframe to set or update consent
       let referrer = document.location.href;
       let csp_website_id = 'test123123_v3';
@@ -45,7 +43,10 @@ Or you can delete these file if you don't need it.
       let updateiframe = document.getElementById('updateIframe');
       updateiframe.addEventListener('click', function(event) {
         event.preventDefault();
-        iframe.src = iframe.src + '&test=testtest';
+
+        consents_approved = JSON.stringify(['necessary','statistics']);
+        consents_denied = JSON.stringify(['marketing','functional']);
+        iframe.src = iframe.src + '&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
       })
     })();
   
