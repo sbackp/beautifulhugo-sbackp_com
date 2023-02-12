@@ -27,13 +27,13 @@ Or you can delete these file if you don't need it.
       // The values needed for the iframe to set or update consent
       let referrer = document.location.href;
       let csp_website_id = 'test123123';
-      let csp_websites = ['sbackp.com','sbackp.dk'].join(',');
+      let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
       
       // Create the iframe to communicate with.
       let iframeContainer = document.getElementById('iframeContainer');
       let iframe = document.createElement('iframe');
 
-      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites;;
+      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites;
       iframe.width='500px';
       iframe.height='100px';
       iframeContainer.appendChild(iframe);
