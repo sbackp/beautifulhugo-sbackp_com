@@ -5,7 +5,6 @@ Or you can delete these file if you don't need it.
 <!-- for example, you could include some js libraries:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.js" integrity="sha256-HdIuWBZj4eftihsoDCJoMYjZi6aNVaw7YlUpzKT3ZxI=" crossorigin="anonymous"></script>
 -->
-  <h1 id="title">Parent Site</h1>
   <div>
     <pre id="dataRetrieved"></pre>
   </div>
@@ -39,7 +38,7 @@ Or you can delete these file if you don't need it.
         else {
           // Handle message from a valid domain.
           document.getElementById('dataRetrieved').textContent = event.data;
-          localStorage.setItem('test',event.data);
+          localStorage.setItem('consent_'+csp_website_id,event.data);
         }
       });
 
