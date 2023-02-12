@@ -16,17 +16,22 @@ Or you can delete these file if you don't need it.
     <!--<iframe src='https://idyllic-kulfi-7c87be.netlify.app/?referrer=https://sbackp.com' width = '500px' height = '100px'></iframe>-->
   </div>
 
+  <form>
+    <button id="updateIframe">update iframe</button>
+  </form>
 
   <!--<div id="otherParentLink"></div>-->
 
   <script>
     (function () {
       // Create the iframe to communicate with.
-      var iframeContainer = document.getElementById('iframeContainer');
-      var iframe = document.createElement('iframe');
+      let iframeContainer = document.getElementById('iframeContainer');
+      let iframe = document.createElement('iframe');
+      
       let referrer = document.location.host;
       let consentID = 'test123';
       let consentDomains = ['sbackp.com','sbackp.dk'].join(',');
+      
       iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&consentid='+consentID+'&consentdomains='+consentDomains;
       iframe.width='500px';
       iframe.height='100px';
@@ -44,6 +49,12 @@ Or you can delete these file if you don't need it.
           document.getElementById('messageOrigin').textContent = event.origin;
         }
       });
+
+      let updateiframe = document.getElementById('updateIframe');
+      updateiframe.addEventListener('click', function(event) {
+        event.preventDefault();
+        iframe.src = iframe.src + '&test=testtest';
+      })
     })();
 
     /*
