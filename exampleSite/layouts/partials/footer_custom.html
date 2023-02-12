@@ -27,7 +27,7 @@ Or you can delete these file if you don't need it.
       // Create the iframe to communicate with.
       let iframe = document.createElement('iframe');
       iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites+'&consent_exp_days='+consent_exp_days;
-      iframe.display='none';
+      iframe.setAttribute('style','display:none !important;');
       document.body.appendChild(iframe);
 
       window.addEventListener('message', function (event) {
