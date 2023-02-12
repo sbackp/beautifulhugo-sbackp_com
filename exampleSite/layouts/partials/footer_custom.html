@@ -24,7 +24,10 @@ Or you can delete these file if you don't need it.
       // Create the iframe to communicate with.
       var iframeContainer = document.getElementById('iframeContainer');
       var iframe = document.createElement('iframe');
-      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+document.location.href;
+      let referrer = document.location.host;
+      let consentID = 'test123';
+      let consentDomains = ['sbackp.com','sbackp.dk'].join(',');
+      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&consentid='+consentID+'&consentdomains='+consentDomains;
       iframe.width='500px';
       iframe.height='100px';
       iframeContainer.appendChild(iframe);
