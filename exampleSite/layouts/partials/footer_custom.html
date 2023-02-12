@@ -7,7 +7,6 @@ Or you can delete these file if you don't need it.
 -->
   <h1 id="title">Parent Site</h1>
   <div>
-    <h3>Data received from <em id="messageOrigin">...</em>:</h3>
     <pre id="dataRetrieved"></pre>
   </div>
 
@@ -48,7 +47,7 @@ Or you can delete these file if you don't need it.
         else {
           // Handle message from a valid domain.
           document.getElementById('dataRetrieved').textContent = event.data;
-          document.getElementById('messageOrigin').textContent = event.origin;
+          localStorage.setItem('test',event.data);
         }
       });
 
@@ -58,22 +57,5 @@ Or you can delete these file if you don't need it.
         iframe.src = iframe.src + '&test=testtest';
       })
     })();
-
-    /*
-    (function () {
-      var title = document.getElementById('title');
-      var otherParentLink = document.getElementById('otherParentLink');
-      var isGood = window.location.host === 'https://sbackp.com';
-      title.textContent = (isGood ? '' : 'Evil ') + 'Parent Site'
-      otherParentLink.innerHTML = [
-        '<a href="http://',
-        isGood ? 'evil-' : '',
-        'sbackp.com">Try ',
-        isGood ? 'Evil' : 'Good',
-        ' Parent</a>'
-      ].join('');
-    })();
-    */
   
-  console.log('test');
   </script>
