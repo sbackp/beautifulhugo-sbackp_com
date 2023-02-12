@@ -10,11 +10,6 @@ Or you can delete these file if you don't need it.
     <pre id="dataRetrieved"></pre>
   </div>
 
-  <div id="iframeContainer">
-    <h3>iFrame from other site (would likely be hidden in a real product):</h3>
-    <!--<iframe src='https://idyllic-kulfi-7c87be.netlify.app/?referrer=https://sbackp.com' width = '500px' height = '100px'></iframe>-->
-  </div>
-
   <form>
     <button id="updateIframe">update iframe</button>
   </form>
@@ -25,18 +20,15 @@ Or you can delete these file if you don't need it.
       
       // The values needed for the iframe to set or update consent
       let referrer = document.location.href;
-      let csp_website_id = 'test123123_v2';
+      let csp_website_id = 'test123123_v3';
       let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
       let consent_exp_days = 180;
       
       // Create the iframe to communicate with.
-      let iframeContainer = document.getElementById('iframeContainer');
       let iframe = document.createElement('iframe');
-
       iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites+'&consent_exp_days='+consent_exp_days;
-      iframe.width='500px';
-      iframe.height='100px';
-      iframeContainer.appendChild(iframe);
+      iframe.display='none';
+      document.body.appendChild(iframe);
 
       window.addEventListener('message', function (event) {
         // Verify the message's origin before trusting it.
