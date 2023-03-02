@@ -16,89 +16,186 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-    (function () {      
-    // The values needed for the iframe to set or update consent
-    let referrer = document.location.href;
-    let csp_website_id = '123123';
-    let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-    let consent_exp_days = 180;
-    
-    // Create the iframe to communicate with.
-    let iframe = document.createElement('iframe');
-    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_website_id+'&csp_websites='+csp_websites+'&exp_days='+consent_exp_days+'&csp_event=load';
-    iframe.setAttribute('style','display:none !important;');
-    document.body.appendChild(iframe);
+    (function() {
+    /*
+        INPUT:
+        - referrer
+        - consent group id
+        - csp_websites
+        - exp_days
+        - csp_event: load, updateDeclineAll, updateAcceptAll, updateSelected
+          - if updateSelected: consents_approved and consents_denied
 
-    window.addEventListener('message', function (event) {
-      // Verify the message's origin before trusting it.
-      console.log('event.origin: '+event.origin);
-      if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
-        // Handle message from a valid domain.
-        if (event.data === 'request new consent') {
-            console.log('show consent solution');
+        LOGIC:
+        - if event = load:
+          - if consent_cookie exit for consent group id
+            AND if url domain name in cookie csp_websites
+            AND if consent_cookie not expired
+            - update cookie csp_websites
+            - return consent
+          - else:
+            - request new consent
+        - else if event = updateDeclineAll | updateAcceptAll | updateSelected:
+          - set consent
+          - return consent
+        - else:
+          - do nothing
+
+        OUTPUT:
+        - set consent:
+          - set localStorage variable named: 'consents_'+consent group id
+          - LocalStorage variable value is stringified dictionary with parameters:
+            - id: consent_group_id
+            - websites: consent_group_websites
+            - exp_days: consent expiration date i days
+            - exp_datetime: consent expiration date
+            - timestamp: consent datetime
+            - consents_approved: [marketing, statistik, personalization, necessary, social media]
+            - consents_denied: []
+            - uid: unique consent id
+            - consent_url
+        - return consent
+          - return 'consents_'+consent group id
+    */
+
+    
+     // DECODE VALUES and VALIDATE
+    let csp_params = getURLParams();
+
+    if (csp_params !== null) {
+        /* Not missing url params or invalid data type assigned to params */
+        if (csp_params.csp_websites.includes(csp_params.referrer_domain) === true) {
+            /* the csp_websites param contains the referrer domain */
+
+            if (csp_params.csp_event === 'load') {
+                const consents = getConsent(csp_id = csp_params.csp_id);
+                if (consents !== null) {
+                    postToParent(csp_id = csp_params.csp_id, origin = csp_params.referrer_url);
+                }
+                else {
+                    console.log('request new consent');
+                    postToParent_requestNewConsent(origin = csp_params.referrer_url)
+                }
+            }
+            else if (csp_params.csp_event === 'updateDeclineAll') {
+                const consents_approved = [];
+                const consents_denied = ['necessary','personalization','statistics','marketing'];
+                setConsent(csp_id=csp_params.csp_id, csp_websites=csp_params.csp_websites, exp_days=csp_params.exp_days, consents_approved=consents_approved, consents_denied=consents_denied, referrer_url=csp_params.referrer_url);
+            }
+            else if (csp_params.csp_event === 'updateAcceptAll') {
+                const consents_approved = ['necessary','personalization','statistics','marketing'];
+                const consents_denied = [];
+                setConsent(csp_id=csp_params.csp_id, csp_websites=csp_params.csp_websites, exp_days=csp_params.exp_days, consents_approved=consents_approved, consents_denied=consents_denied, referrer_url=csp_params.referrer_url);
+            }
+            else if (csp_params.csp_event === 'updateSelected') {
+                setConsent(csp_id=csp_params.csp_id, csp_websites=csp_params.csp_websites, exp_days=csp_params.exp_days, consents_approved=csp_params.consents_approved, consents_denied=csp_params.consents_denied, referrer_url=csp_params.referrer_url);
+            }
         }
         else {
-            console.log('test: '+event.data);
-            document.getElementById('dataRetrieved').textContent = event.data;
-            localStorage.setItem('consent_'+csp_website_id,event.data);
+            console.log('referrer_domain not in csp_websites');
         }
-      }
-      else {
-        console.error('evil domain');
-      }
-    });
+    }
+    else {
+        console.log('csp_params are invalid');
+    }
+    
+    function postToParent(csp_id, origin) {
+        parent.postMessage(localStorage.getItem('consent_'+csp_id), origin);
+    }
 
+    function postToParent_requestNewConsent(origin) {
+        parent.postMessage('request new consent', origin)
+    }
 
-    /* REWRITE FOR ONETRUST */
-    let updateDeclineAll = document.getElementById('updateDeclineAll');
-    updateDeclineAll.addEventListener('click', function(event){
-        event.preventDefault();
+    function getConsent(csp_id) {
+        /*
+          Get consent. Returns null if error in dictionary or the variable does not exist
+        */
+        let consents = null;
+        try {
+            consents = JSON.parse(localStorage.getItem('consent_'+csp_id));
+            const exp_datetime = consents.exp_datetime;
+            if (exp_datetime < new Date().getTime()) {
+                consents = null;
+            }
+        }
+        catch(err) {}
+
+        return consents
+    }
+
+    function setConsent(csp_id, csp_websites, exp_days, consents_approved, consents_denied, referrer_url) {
+        const consent_obj = {
+            'csp_id': csp_id,
+            'csp_websites': csp_websites,
+            'exp_days': exp_days,
+            'exp_datetime': new Date().getTime() + (86400000 * exp_days),
+            'timestamp': new Date().getTime(),
+            'consents_approved': consents_approved,
+            'consents_denied': consents_denied,
+            'uid': gen_random_uid(100),
+            'consent_url': referrer_url
+        }
+
+        localStorage.setItem('consent_'+csp_id, JSON.stringify(consent_obj));
+        postToParent(csp_id=csp_id, origin=referrer_url)
+    }
+
+    function gen_random_uid(length) {
+        /* Generate random ID*/
+        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+        const charLength = chars.length;
+        let result = '';
+        for (i = 0; i < length; i++ ) {
+            result += chars.charAt(Math.floor(Math.random() * charLength));
+        }
+        return result;
+    }
+
+    function getURLParams() {
+        /*
+            Get url parameters and validate. Returns an object params with value null if any param is missing or invalid
+        */
+        let params = {};
         
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
-        
-        consents_approved = JSON.stringify([]);
-        consents_denied = JSON.stringify(['necessary','statistics','marketing','functional']);
-        
-        let iframe = document.getElementsByTagName('iframe')[0];
-        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateDeclineAll';
-    });
+        let url = new URL(document.location.href);                                 // parameters appended to iframe url
+        let referrer = new URL(url.searchParams.get('referrer'));                  // url
 
-    let updateAcceptAll = document.getElementById('updateAcceptAll');
-    updateAcceptAll.addEventListener('click', function(event){
-        event.preventDefault();
-        
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
+        params['csp_id'] = url.searchParams.get('csp_id');          // consent group id
+        params['csp_websites'] = JSON.parse(url.searchParams.get('csp_websites'));  // consent group websites
+        params['referrer_url'] = referrer.href;
+        params['referrer_domain'] = referrer.host;
+        params['exp_days'] = parseInt(url.searchParams.get('exp_days'));            // consent expiration date in days
+        params['csp_event'] = url.searchParams.get('csp_event');                        // event
+        params['consents_approved'] = JSON.parse(url.searchParams.get('consents_approved') || "[]");
+        params['consents_denied'] = JSON.parse(url.searchParams.get('consents_denied') || "[]");
 
-        consents_approved = JSON.stringify(['necessary','statistics','marketing','functional']);
-        consents_denied = JSON.stringify([]);
-
-        let iframe = document.getElementsByTagName('iframe')[0];
-        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateAcceptAll';
-    });
-
-    let updateSelected = document.getElementById('updateSelected');
-    updateSelected.addEventListener('click', function(event){
-        event.preventDefault();
-        
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
-
-        consents_approved = JSON.stringify(['necessary','marketing','functional']);
-        consents_denied = JSON.stringify(['statistics']);
-
-        let iframe = document.getElementsByTagName('iframe')[0];
-        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateSelected&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
-    });
-
-    /* REWRITE FOR ONETRUST */
-  })();
+        for (const [key, value] of Object.entries(params)) {
+            if (key === 'csp_websites' || key === 'consents_approved' || key === 'consents_denied') {
+                if (Array.isArray(value) !== true) {
+                    params = null;
+                    break;
+                }
+            }
+            else if (key === 'exp_days') {
+                if (Number.isInteger(value) !== true) {
+                    params = null;
+                    break;
+                }
+            }
+            else if (key === 'csp_event') {
+                if (value !== 'load' && value !== 'updateDeclineAll' && value !=='updateAcceptAll' && value !== 'updateSelected') {
+                    params = null;
+                    break;
+                }
+            }
+            else if (typeof value !== 'string') {
+                params = null;
+                break;
+            }
+        }
+        return params;
+    }
+})();
   
   </script>
