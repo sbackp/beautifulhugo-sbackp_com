@@ -90,11 +90,11 @@ Or you can delete these file if you don't need it.
         let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
         let exp_days = 180;
 
-        consents_approved = JSON.stringify(['necessary',,'marketing','functional']);
+        consents_approved = JSON.stringify(['necessary','marketing','functional']);
         consents_denied = JSON.stringify(['statistics']);
 
         let iframe = document.getElementsByTagName('iframe')[0];
-        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateSelected';
+        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateSelected&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
     });
 
     /* REWRITE FOR ONETRUST */
