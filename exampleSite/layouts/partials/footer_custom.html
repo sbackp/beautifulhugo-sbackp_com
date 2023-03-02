@@ -10,44 +10,94 @@ Or you can delete these file if you don't need it.
   </div>
 
   <form>
-    <button id="updateIframe">update iframe</button>
+    <button id="updateDeclineAll">updateDeclineAll</button>
+    <button id="updateAcceptAll">updateAcceptAll</button>
+    <button id="updateSelected">updateSelected</button>
   </form>
 
   <script>
-    /*(function () {      
-      // The values needed for the iframe to set or update consent
-      let referrer = document.location.href;
-      let csp_website_id = 'test123123_v3';
-      let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-      let consent_exp_days = 180;
-      
-      // Create the iframe to communicate with.
-      let iframe = document.createElement('iframe');
-      iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_website_id='+csp_website_id+'&csp_websites='+csp_websites+'&consent_exp_days='+consent_exp_days;
-      iframe.setAttribute('style','display:none !important;');
-      document.body.appendChild(iframe);
+    (function () {      
+    // The values needed for the iframe to set or update consent
+    let referrer = document.location.href;
+    let csp_website_id = '123123';
+    let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
+    let consent_exp_days = 180;
+    
+    // Create the iframe to communicate with.
+    let iframe = document.createElement('iframe');
+    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_website_id+'&csp_websites='+csp_websites+'&exp_days='+consent_exp_days+'&csp_event=load';
+    iframe.setAttribute('style','display:none !important;');
+    document.body.appendChild(iframe);
 
-      window.addEventListener('message', function (event) {
-        // Verify the message's origin before trusting it.
-        if (event.origin !== 'https://idyllic-kulfi-7c87be.netlify.app') {
-          // Handle message from an evil domain.
-          alert('Message event received from bad origin');
+    window.addEventListener('message', function (event) {
+      // Verify the message's origin before trusting it.
+      if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
+        // Handle message from a valid domain.
+        if (event.data === 'request new consent') {
+            console.log('show consent solution');
         }
         else {
-          // Handle message from a valid domain.
-          document.getElementById('dataRetrieved').textContent = event.data;
-          localStorage.setItem('consent_'+csp_website_id,event.data);
+            console.log('test: '+event.data);
+            document.getElementById('dataRetrieved').textContent = event.data;
+            localStorage.setItem('consent_'+csp_website_id,event.data);
         }
-      });
+      }
+      else {
+        console.error('evil domain');
+      }
+    });
 
-      let updateiframe = document.getElementById('updateIframe');
-      updateiframe.addEventListener('click', function(event) {
-        event.preventDefault();
 
-        consents_approved = JSON.stringify(['necessary','statistics']);
-        consents_denied = JSON.stringify(['marketing','functional']);
-        iframe.src = iframe.src + '&event=update&consents_approved='+consents_approved+'&consents_denied='+consents_denied;
-      })
-    })();*/
+    /* REWRITE FOR ONETRUST */
+    let updateDeclineAll = document.getElementById('updateDeclineAll');
+    updateDeclineAll.addEventListener('click', function(event){
+        event.prevenDefault();
+        
+        let referrer = document.location.href;
+        let csp_id = '123123';
+        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
+        let exp_days = 180;
+        
+        consents_approved = JSON.stringify([]);
+        consents_denied = JSON.stringify(['necessary','statistics','marketing','functional']);
+        
+        let iframe = document.getElementsByTagName('iframe')[0];
+        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateDeclineAll';
+    });
+
+    let updateAcceptAll = document.getElementById('updateAcceptAll');
+    updateAcceptAll.addEventListener('click', function(event){
+        event.prevenDefault();
+        
+        let referrer = document.location.href;
+        let csp_id = '123123';
+        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
+        let exp_days = 180;
+
+        consents_approved = JSON.stringify(['necessary','statistics','marketing','functional']);
+        consents_denied = JSON.stringify([]);
+
+        let iframe = document.getElementsByTagName('iframe')[0];
+        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateAcceptAll';
+    });
+
+    let updateSelected = document.getElementById('updateSelected');
+    updateSelected.addEventListener('click', function(event){
+        event.prevenDefault();
+        
+        let referrer = document.location.href;
+        let csp_id = '123123';
+        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
+        let exp_days = 180;
+
+        consents_approved = JSON.stringify(['necessary',,'marketing','functional']);
+        consents_denied = JSON.stringify(['statistics']);
+
+        let iframe = document.getElementsByTagName('iframe')[0];
+        iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=updateSelected';
+    });
+
+    /* REWRITE FOR ONETRUST */
+  })();
   
   </script>
