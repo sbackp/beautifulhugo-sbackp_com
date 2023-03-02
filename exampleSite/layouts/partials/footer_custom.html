@@ -19,13 +19,13 @@ Or you can delete these file if you don't need it.
     (function () {      
     // The values needed for the iframe to set or update consent
     let referrer = document.location.href;
-    let csp_website_id = '123123';
+    let csp_id = '123123';
     let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
     let consent_exp_days = 180;
     
     // Create the iframe to communicate with.
     let iframe = document.createElement('iframe');
-    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_website_id+'&csp_websites='+csp_websites+'&exp_days='+consent_exp_days+'&csp_event=load';
+    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+consent_exp_days+'&csp_event=load';
     iframe.setAttribute('style','display:none !important;');
     document.body.appendChild(iframe);
 
@@ -38,7 +38,7 @@ Or you can delete these file if you don't need it.
         }
         else {
             document.getElementById('dataRetrieved').textContent = event.data;
-            localStorage.setItem('consent_'+csp_website_id, event.data);
+            localStorage.setItem('consent_'+csp_id, event.data);
         }
       }
       else {
@@ -52,11 +52,6 @@ Or you can delete these file if you don't need it.
     updateDeclineAll.addEventListener('click', function(event){
         event.preventDefault();
         
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
-        
         consents_approved = JSON.stringify([]);
         consents_denied = JSON.stringify(['necessary','statistics','marketing','functional']);
         
@@ -67,11 +62,6 @@ Or you can delete these file if you don't need it.
     let updateAcceptAll = document.getElementById('updateAcceptAll');
     updateAcceptAll.addEventListener('click', function(event){
         event.preventDefault();
-        
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
 
         consents_approved = JSON.stringify(['necessary','statistics','marketing','functional']);
         consents_denied = JSON.stringify([]);
@@ -83,11 +73,6 @@ Or you can delete these file if you don't need it.
     let updateSelected = document.getElementById('updateSelected');
     updateSelected.addEventListener('click', function(event){
         event.preventDefault();
-        
-        let referrer = document.location.href;
-        let csp_id = '123123';
-        let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-        let exp_days = 180;
 
         consents_approved = JSON.stringify(['necessary','marketing','functional']);
         consents_denied = JSON.stringify(['statistics']);
