@@ -51,7 +51,7 @@ Or you can delete these file if you don't need it.
     /* REWRITE FOR ONETRUST */
     let updateDeclineAll = document.getElementById('updateDeclineAll');
     updateDeclineAll.addEventListener('click', function(event){
-        event.prevenDefault();
+        event.preventDefault();
         
         let referrer = document.location.href;
         let csp_id = '123123';
@@ -67,7 +67,7 @@ Or you can delete these file if you don't need it.
 
     let updateAcceptAll = document.getElementById('updateAcceptAll');
     updateAcceptAll.addEventListener('click', function(event){
-        event.prevenDefault();
+        event.preventDefault();
         
         let referrer = document.location.href;
         let csp_id = '123123';
@@ -83,7 +83,7 @@ Or you can delete these file if you don't need it.
 
     let updateSelected = document.getElementById('updateSelected');
     updateSelected.addEventListener('click', function(event){
-        event.prevenDefault();
+        event.preventDefault();
         
         let referrer = document.location.href;
         let csp_id = '123123';
