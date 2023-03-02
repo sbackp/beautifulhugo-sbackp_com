@@ -31,6 +31,7 @@ Or you can delete these file if you don't need it.
 
     window.addEventListener('message', function (event) {
       // Verify the message's origin before trusting it.
+      console.log('event.origin: '+event.origin);
       if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
         // Handle message from a valid domain.
         if (event.data === 'request new consent') {
