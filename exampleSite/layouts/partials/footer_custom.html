@@ -21,11 +21,11 @@ Or you can delete these file if you don't need it.
     let referrer = document.location.href;
     let csp_id = '123123';
     let csp_websites = JSON.stringify(['sbackp.com','sbackp.dk']);
-    let consent_exp_days = 180;
+    let exp_days = 180;
     
     // Create the iframe to communicate with.
     let iframe = document.createElement('iframe');
-    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+consent_exp_days+'&csp_event=load';
+    iframe.src='https://idyllic-kulfi-7c87be.netlify.app/?referrer='+referrer+'&csp_id='+csp_id+'&csp_websites='+csp_websites+'&exp_days='+exp_days+'&csp_event=load';
     iframe.setAttribute('style','display:none !important;');
     document.body.appendChild(iframe);
 
