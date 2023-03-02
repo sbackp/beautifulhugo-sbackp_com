@@ -31,14 +31,12 @@ Or you can delete these file if you don't need it.
 
     window.addEventListener('message', function (event) {
       // Verify the message's origin before trusting it.
-      console.log('event.origin: '+event.origin);
       if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
         // Handle message from a valid domain.
         if (event.data === 'request new consent') {
             console.log('show consent solution');
         }
         else {
-            console.log('test: '+event.data);
             document.getElementById('dataRetrieved').textContent = event.data;
             localStorage.setItem('consent_'+csp_website_id, event.data);
         }
