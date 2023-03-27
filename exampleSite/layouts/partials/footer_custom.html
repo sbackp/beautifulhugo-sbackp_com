@@ -37,12 +37,12 @@ Or you can delete these file if you don't need it.
       // Handle message from a valid domain.
       if (event.data === 'request new consent') {
         console.log('show consent solution');
+        document.getElementsByTagName('form')[0].setAttribute('style', 'display:block');
       } else {
         document.getElementById('dataRetrieved').textContent = event.data;
+        document.getElementsByTagName('form')[0].setAttribute('style', 'display:none');
         localStorage.setItem('consent_' + cspWebsiteId, event.data);
       }
-    } else {
-      console.error('evil domain');
     }
   });
 
@@ -74,6 +74,7 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
+
 
   
   </script>
