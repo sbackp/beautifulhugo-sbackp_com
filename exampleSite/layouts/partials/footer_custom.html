@@ -37,7 +37,7 @@ Or you can delete these file if you don't need it.
         console.log('show consent solution');
       } else {
         document.getElementById('dataRetrieved').textContent = event.data;
-        localStorage.setItem(`consent_${cspWebsiteId}`, event.data);
+        localStorage.setItem('consent_' + cspWebsiteId, event.data);
       }
     } else {
       console.error('evil domain');
@@ -49,14 +49,14 @@ Or you can delete these file if you don't need it.
   updateDeclineAll.addEventListener('click', (event) => {
     event.preventDefault();
 
-    iframe.src = `https://idyllic-kulfi-7c87be.netlify.app/?referrer=${referrer}&csp_id=${cspWebsiteId}&csp_websites=${cspWebsites}&exp_days=${consentExpDays}&csp_event=updateDeclineAll`;
+    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateDeclineAll';
   });
 
   const updateAcceptAll = document.getElementById('updateAcceptAll');
   updateAcceptAll.addEventListener('click', (event) => {
     event.preventDefault();
 
-    iframe.src = `https://idyllic-kulfi-7c87be.netlify.app/?referrer=${referrer}&csp_id=${cspWebsiteId}&csp_websites=${cspWebsites}&exp_days=${consentExpDays}&csp_event=updateAcceptAll`;
+    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateAcceptAll';
   });
 
   const updateSelected = document.getElementById('updateSelected');
@@ -66,11 +66,10 @@ Or you can delete these file if you don't need it.
     const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
     const consentsDenied = JSON.stringify(['statistics']);
 
-    iframe.src = `https://idyllic-kulfi-7c87be.netlify.app/?referrer=${referrer}&csp_id=${cspWebsiteId}&csp_websites=${cspWebsites}&exp_days=${consentExpDays}&csp_event=updateSelected&consents_approved=${consentsApproved}&consents_denied=${consentsDenied}`;
+    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateSelected&consents_approved=' + consentsApproved + '&consents_denied=' + consentsDenied;
   });
 
   /* REWRITE FOR ONETRUST */
 }());
-
   
   </script>
