@@ -19,15 +19,19 @@ Or you can delete these file if you don't need it.
     (function consentsFunc() {
   // The values needed for the iframe to set or update consent
   const referrer = document.location.href;
-  const cspWebsiteId = '123123';
-  const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk']);
-  const consentExpDays = 180;
+  const cspWebsiteId = '123123'; // replace for each collection of websites
+  const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk']); // collection of websites
+  const consentExpDays = 180; // get from onetrust setting
 
   // Create the iframe to communicate with.
   const iframe = document.createElement('iframe');
   iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=load';
   iframe.setAttribute('style', 'display:none !important;');
   document.body.appendChild(iframe);
+
+  iframe.addEventListener('load', () => {
+    console.log('iframe has finished loading');
+  });
 
   window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
@@ -63,6 +67,7 @@ Or you can delete these file if you don't need it.
   updateSelected.addEventListener('click', (event) => {
     event.preventDefault();
 
+    // take from selection
     const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
     const consentsDenied = JSON.stringify(['statistics']);
 
@@ -71,5 +76,6 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
+
   
   </script>
