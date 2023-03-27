@@ -16,7 +16,7 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-    (function () {
+    (function consentsFunc() {
   // The values needed for the iframe to set or update consent
   const referrer = document.location.href;
   const cspWebsiteId = '123123';
@@ -25,7 +25,7 @@ Or you can delete these file if you don't need it.
 
   // Create the iframe to communicate with.
   const iframe = document.createElement('iframe');
-  iframe.src = `https://idyllic-kulfi-7c87be.netlify.app/?referrer=${referrer}&csp_id=${cspWebsiteId}&csp_websites=${cspWebsites}&exp_days=${consentExpDays}&csp_event=load`;
+  iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=load';
   iframe.setAttribute('style', 'display:none !important;');
   document.body.appendChild(iframe);
 
