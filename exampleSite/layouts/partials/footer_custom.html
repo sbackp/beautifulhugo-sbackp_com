@@ -39,7 +39,10 @@ Or you can delete these file if you don't need it.
     // Verify the message's origin before trusting it.
     if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
       // Handle message from a valid domain.
-      if (event.data === 'request new consent') {
+      if (event.data === 'consents iframe has loaded') {
+        console.log('consents iframe has loaded');
+      }
+      else if (event.data === 'request new consent') {
         console.log('show consent solution');
       } else {
         document.getElementById('dataRetrieved').textContent = event.data;
@@ -78,7 +81,5 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
-
-
   
   </script>
