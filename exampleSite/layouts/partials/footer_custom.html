@@ -22,7 +22,7 @@ Or you can delete these file if you don't need it.
   const cspWebsiteId = '123123'; // replace for each collection of websites
   const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk']); // collection of websites
   const consentExpDays = 180; // get from onetrust setting
-  const consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app/';
+  const consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
 
   // Create the iframe to communicate with.
   const iframe = document.createElement('iframe');
@@ -32,12 +32,13 @@ Or you can delete these file if you don't need it.
 
   window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
-    if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
+    if (event.origin === consentUrl) {
       // Handle message from a valid domain.
       if (event.data === 'request new consent') {
-        document.getElementsByTagName('form')[0].setAttribute('style', 'display:block');
+        document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
       } else {
-        document.getElementById('dataRetrieved').textContent = event.data;
+        document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
+        document.getElementById('dataRetrieved').textContent = event.data; // remove
         localStorage.setItem('consent_' + cspWebsiteId, event.data);
       }
     }
@@ -71,5 +72,6 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
+
   
   </script>
