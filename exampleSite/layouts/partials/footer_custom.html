@@ -22,27 +22,19 @@ Or you can delete these file if you don't need it.
   const cspWebsiteId = '123123'; // replace for each collection of websites
   const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk']); // collection of websites
   const consentExpDays = 180; // get from onetrust setting
+  const consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app/';
 
   // Create the iframe to communicate with.
   const iframe = document.createElement('iframe');
-  iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=load';
+  iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=load';
   iframe.setAttribute('style', 'display:none !important;');
-
-  iframe.addEventListener('load', () => {
-    console.log('iframe has finished loading');
-  });
-
   document.body.appendChild(iframe);
-
 
   window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
     if (event.origin === 'https://idyllic-kulfi-7c87be.netlify.app') {
       // Handle message from a valid domain.
-      if (event.data === 'consents iframe has loaded') {
-        console.log('consents iframe has loaded');
-      }
-      else if (event.data === 'request new consent') {
+      if (event.data === 'request new consent') {
         console.log('show consent solution');
       } else {
         document.getElementById('dataRetrieved').textContent = event.data;
@@ -58,14 +50,14 @@ Or you can delete these file if you don't need it.
   updateDeclineAll.addEventListener('click', (event) => {
     event.preventDefault();
 
-    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateDeclineAll';
+    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateDeclineAll';
   });
 
   const updateAcceptAll = document.getElementById('updateAcceptAll');
   updateAcceptAll.addEventListener('click', (event) => {
     event.preventDefault();
 
-    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateAcceptAll';
+    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateAcceptAll';
   });
 
   const updateSelected = document.getElementById('updateSelected');
@@ -76,7 +68,7 @@ Or you can delete these file if you don't need it.
     const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
     const consentsDenied = JSON.stringify(['statistics']);
 
-    iframe.src = 'https://idyllic-kulfi-7c87be.netlify.app/?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateSelected&consents_approved=' + consentsApproved + '&consents_denied=' + consentsDenied;
+    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateSelected&consents_approved=' + consentsApproved + '&consents_denied=' + consentsDenied;
   });
 
   /* REWRITE FOR ONETRUST */
