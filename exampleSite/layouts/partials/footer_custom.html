@@ -5,9 +5,6 @@ Or you can delete these file if you don't need it.
 <!-- for example, you could include some js libraries:
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.js" integrity="sha256-HdIuWBZj4eftihsoDCJoMYjZi6aNVaw7YlUpzKT3ZxI=" crossorigin="anonymous"></script>
 -->
-  <div>
-    <pre id="dataRetrieved"></pre>
-  </div>
 
   <form>
     <button id="updateDeclineAll">updateDeclineAll</button>
@@ -42,7 +39,6 @@ Or you can delete these file if you don't need it.
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
       } else {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
-        document.getElementById('dataRetrieved').textContent = event.data; // remove
         localStorage.setItem('consent_' + cspWebsiteId, event.data);
       }
     }
@@ -51,9 +47,6 @@ Or you can delete these file if you don't need it.
   setTimeout(() => {
     if (iframeLoaded === false) {
       console.log('consents child have not responded within 0.5 second');
-    }
-    else {
-      console.log('yesy');
     }
   }, 500);
 
@@ -85,8 +78,5 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
-
-
-
   
   </script>
