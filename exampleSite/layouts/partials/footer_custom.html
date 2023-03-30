@@ -13,7 +13,7 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-   (function consentsFunc() {
+  (function consentsFunc() {
   // The values needed for the iframe to set or update consent
   const referrer = document.location.href;
   const cspWebsiteId = '123123'; // replace for each collection of websites
@@ -36,7 +36,7 @@ Or you can delete these file if you don't need it.
         iframeLoaded = true;
       }
       // Handle message from a valid domain.
-      if (event.data === 'request new consent') {
+      else if (event.data === 'request new consent') {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
       } else {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
