@@ -17,7 +17,7 @@ Or you can delete these file if you don't need it.
   // The values needed for the iframe to set or update consent
   const referrer = document.location.href;
   const cspWebsiteId = '123123'; // replace for each collection of websites
-  const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk']); // collection of websites
+  const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk', 'tryg.dk']); // collection of websites
   const consentExpDays = 180; // get from onetrust setting
   const consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
   let iframeLoaded = false;
@@ -32,6 +32,7 @@ Or you can delete these file if you don't need it.
     // Verify the message's origin before trusting it.
     if (event.origin === consentUrl) {
       if (event.data === 'consents iframe has loaded') {
+        console.log('consents iframe has loaded');
         iframeLoaded = true;
       }
       // Handle message from a valid domain.
@@ -78,5 +79,6 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
+
   
   </script>
