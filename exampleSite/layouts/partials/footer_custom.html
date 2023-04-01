@@ -35,9 +35,12 @@ Or you can delete these file if you don't need it.
         console.log('consents iframe has loaded');
         iframeLoaded = true;
       }
+
       // Handle message from a valid domain.
-      if (event.data === 'consents delete') {
-        localStorage.removeItem('consent_' + cspWebsiteId);
+      if (event.data === 'consents invalid URL params') {
+        console.log('consents invalid URL params'); // Invalid URL params
+      } else if (event.data === 'consents delete') {
+        localStorage.removeItem('consent_' + cspWebsiteId); // Delete consent
       } else if (event.data === 'consents request') {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
       } else {
@@ -81,5 +84,6 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
+
   
   </script>
