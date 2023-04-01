@@ -47,9 +47,7 @@ Or you can delete these file if you don't need it.
         } else if (event.data === 'consents request') {
           this.showConsentBanner(); // Request Consent
         } else {
-            this.hideConsentBanner();
-            console.log('hey!');
-            console.log(event.data);
+          this.hideConsentBanner();
           this.setConsent(event.data); // Consents Iframe returned Consent
         }
       }
@@ -122,8 +120,7 @@ Or you can delete these file if you don't need it.
     const updateDeclineAll = document.getElementById('updateDeclineAll');
     const iframe = document.getElementById(this.iframeId);
     updateDeclineAll.addEventListener('click', (event) => {
-        event.preventDefault();
-        console.log(''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateDeclineAll'));
+      event.preventDefault();
       iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateDeclineAll');
     });
   }
@@ -132,8 +129,7 @@ Or you can delete these file if you don't need it.
     const updateAcceptAll = document.getElementById('updateAcceptAll');
     const iframe = document.getElementById(this.iframeId);
     updateAcceptAll.addEventListener('click', (event) => {
-        event.preventDefault();
-        console.log(''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateAcceptAll'));
+      event.preventDefault();
       iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateAcceptAll');
     });
   }
@@ -147,7 +143,6 @@ Or you can delete these file if you don't need it.
       // take from selection
       const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
       const consentsDenied = JSON.stringify(['statistics']);
-      console.log(''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=consents_approved', '&consents_approved=', consentsApproved, '&consents_denied=', consentsDenied));
       iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=consents_approved', '&consents_approved=', consentsApproved, '&consents_denied=', consentsDenied);
     });
   }
