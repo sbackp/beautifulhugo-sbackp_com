@@ -13,7 +13,7 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
- class CookieConsentParent {
+class CookieConsentParent {
   constructor(cspWebsiteId, cspWebsites, consentExpDays) {
     this.referrer = document.location.href;
     this.cspWebsiteId = cspWebsiteId; // replace for each collection of websites
@@ -45,7 +45,7 @@ Or you can delete these file if you don't need it.
           this.showConsentBanner(); // Request Consent
         } else if (event.data.message === 'setConsent') {
           this.hideConsentBanner();
-          this.setConsent(event.data); // Consents Iframe returned Consent
+          this.setConsent(event.data.consent); // Consents Iframe returned Consent
         }
       }
     });
