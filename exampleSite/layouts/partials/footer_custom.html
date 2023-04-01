@@ -37,10 +37,7 @@ Or you can delete these file if you don't need it.
         if (event.data === 'consents iframe has loaded') {
           console.log('consents iframe has loaded');
           this.iframeLoaded = true;
-        }
-
-        // Handle message from a valid domain.
-        if (event.data === 'consents invalid URL params') {
+        } else if (event.data === 'consents invalid URL params') {
           console.log('consents invalid URL params'); // Invalid URL params
         } else if (event.data === 'consents delete') {
           this.deleteConsent(this.cookieName); // Delete consent
@@ -150,6 +147,7 @@ Or you can delete these file if you don't need it.
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
+
 
 
   </script>
