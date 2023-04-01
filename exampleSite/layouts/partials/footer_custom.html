@@ -47,7 +47,9 @@ Or you can delete these file if you don't need it.
         } else if (event.data === 'consents request') {
           this.showConsentBanner(); // Request Consent
         } else {
-          this.hideConsentBanner();
+            this.hideConsentBanner();
+            console.log('hey!');
+            console.log(event.data);
           this.setConsent(this.cookieName, event.data); // Consents Iframe returned Consent
         }
       }
@@ -153,5 +155,6 @@ Or you can delete these file if you don't need it.
 
 const ConsentParentInstance = new CookieConsentParent();
 ConsentParentInstance.run_program();
+
 
   </script>
