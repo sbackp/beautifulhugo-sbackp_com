@@ -36,7 +36,9 @@ Or you can delete these file if you don't need it.
         iframeLoaded = true;
       }
       // Handle message from a valid domain.
-      else if (event.data === 'request new consent') {
+      if (event.data === 'consents delete') {
+        localStorage.removeItem('consent_' + cspWebsiteId);
+      } else if (event.data === 'consents request') {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
       } else {
         document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
@@ -79,6 +81,5 @@ Or you can delete these file if you don't need it.
 
   /* REWRITE FOR ONETRUST */
 }());
-
   
   </script>
