@@ -34,16 +34,16 @@ Or you can delete these file if you don't need it.
     window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
       if (event.origin === this.consentUrl) {
-        if (event.data === 'consents iframe has loaded') {
+        if (event.data.message === 'consents iframe has loaded') {
           console.log('consents iframe has loaded');
           this.iframeLoaded = true;
-        } else if (event.data === 'consents invalid URL params') {
+        } else if (event.data.message === 'consents invalid URL params') {
           console.log('consents invalid URL params'); // Invalid URL params
-        } else if (event.data === 'consents delete') {
+        } else if (event.data.message === 'consents delete') {
           this.deleteConsent(this.cookieName); // Delete consent
-        } else if (event.data === 'consents request') {
+        } else if (event.data.message === 'consents request') {
           this.showConsentBanner(); // Request Consent
-        } else {
+        } else if (event.data.message === 'setConsent') {
           this.hideConsentBanner();
           this.setConsent(event.data); // Consents Iframe returned Consent
         }
@@ -82,7 +82,7 @@ Or you can delete these file if you don't need it.
   }
 
   setConsent(value) {
-    this.setCookie(this.cookieName, value, this.consentExpDays);
+    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
   }
 
   deleteConsent() {
