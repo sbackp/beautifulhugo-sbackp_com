@@ -13,7 +13,7 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-  class CookieConsentParent {
+ class CookieConsentParent {
   constructor() {
     this.referrer = document.location.href;
     this.cspWebsiteId = '123123'; // replace for each collection of websites
@@ -50,7 +50,7 @@ Or you can delete these file if you don't need it.
             this.hideConsentBanner();
             console.log('hey!');
             console.log(event.data);
-          this.setConsent(this.cookieName, event.data); // Consents Iframe returned Consent
+          this.setConsent(event.data); // Consents Iframe returned Consent
         }
       }
     });
@@ -155,6 +155,5 @@ Or you can delete these file if you don't need it.
 
 const ConsentParentInstance = new CookieConsentParent();
 ConsentParentInstance.run_program();
-
 
   </script>
