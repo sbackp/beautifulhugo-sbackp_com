@@ -23,14 +23,13 @@ Or you can delete these file if you don't need it.
     this.consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
     this.iframeLoaded = false;
     this.iframeId = 'iframename';
-
-    this.updateDeclineAll();
-    this.updateAcceptAll();
-    this.updateSelected();
   }
 
   run_program() {
     this.createIframe();
+    this.updateDeclineAll();
+    this.updateAcceptAll();
+    this.updateSelected();
 
     window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
