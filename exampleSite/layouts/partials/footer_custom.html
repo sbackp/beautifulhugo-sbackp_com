@@ -13,77 +13,146 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-  (function consentsFunc() {
-  // The values needed for the iframe to set or update consent
-  const referrer = document.location.href;
-  const cspWebsiteId = '123123'; // replace for each collection of websites
-  const cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk', 'tryg.dk']); // collection of websites
-  const consentExpDays = 180; // get from onetrust setting
-  const consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
-  let iframeLoaded = false;
+  class CookieConsentParent {
+  constructor() {
+    this.referrer = document.location.href;
+    this.cspWebsiteId = '123123'; // replace for each collection of websites
+    this.cookieName = ''.concat('consent_', '123123');
+    this.cspWebsites = JSON.stringify(['sbackp.com', 'sbackp.dk', 'tryg.dk']); // collection of websites
+    this.consentExpDays = 180; // get from onetrust setting
+    this.consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
+    this.iframeLoaded = false;
+    this.iframeId = 'iframename';
 
-  // Create the iframe to communicate with.
-  const iframe = document.createElement('iframe');
-  iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=load';
-  iframe.setAttribute('style', 'display:none !important;');
-  document.body.appendChild(iframe);
+    this.updateDeclineAll();
+    this.updateAcceptAll();
+    this.updateSelected();
+  }
 
-  window.addEventListener('message', (event) => {
+  run_program() {
+    this.createIframe();
+
+    window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
-    if (event.origin === consentUrl) {
-      if (event.data === 'consents iframe has loaded') {
-        console.log('consents iframe has loaded');
-        iframeLoaded = true;
-      }
+      if (event.origin === this.consentUrl) {
+        if (event.data === 'consents iframe has loaded') {
+          console.log('consents iframe has loaded');
+          this.iframeLoaded = true;
+        }
 
-      // Handle message from a valid domain.
-      if (event.data === 'consents invalid URL params') {
-        console.log('consents invalid URL params'); // Invalid URL params
-      } else if (event.data === 'consents delete') {
-        localStorage.removeItem('consent_' + cspWebsiteId); // Delete consent
-      } else if (event.data === 'consents request') {
-        document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
-      } else {
-        document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
-        localStorage.setItem('consent_' + cspWebsiteId, event.data);
+        // Handle message from a valid domain.
+        if (event.data === 'consents invalid URL params') {
+          console.log('consents invalid URL params'); // Invalid URL params
+        } else if (event.data === 'consents delete') {
+          this.deleteConsent(this.cookieName); // Delete consent
+        } else if (event.data === 'consents request') {
+          this.showConsentBanner(); // Request Consent
+        } else {
+          this.hideConsentBanner();
+          this.setConsent(this.cookieName, event.data); // Consents Iframe returned Consent
+        }
+      }
+    });
+
+    setTimeout(() => {
+      if (this.iframeLoaded === false) {
+        console.log('consents iframe has not responded within 2 seconds');
+      }
+    }, 2000);
+  }
+
+  showConsentBanner() {
+    document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
+  }
+
+  hideConsentBanner() {
+    document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
+  }
+
+  createIframe() {
+    const iframe = document.createElement('iframe');
+    iframe.id = this.iframeId;
+    iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=load');
+    iframe.setAttribute('style', 'display:none !important;');
+    document.body.appendChild(iframe);
+  }
+
+  getConsent() {
+    let consent = null;
+    try {
+      consent = JSON.parse(this.getCookie(this.cookieName));
+    } catch (err) { /* empty */ }
+    return consent;
+  }
+
+  setConsent(value) {
+    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
+  }
+
+  deleteConsent() {
+    this.setCookie(this.cookieName, '', 0);
+  }
+
+  getCookie(cname) {
+    const name = ''.concat(cname, '=');
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const ca = decodedCookie.split(';');
+    for (let i = 0; i < ca.length; i += 1) {
+      let c = ca[i];
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) === 0) {
+        return c.substring(name.length, c.length);
       }
     }
-  });
+    return null;
+  }
 
-  setTimeout(() => {
-    if (iframeLoaded === false) {
-      console.log('consents child have not responded within 0.5 second');
-    }
-  }, 500);
-
-  /* REWRITE FOR ONETRUST */
-  const updateDeclineAll = document.getElementById('updateDeclineAll');
-  updateDeclineAll.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateDeclineAll';
-  });
-
-  const updateAcceptAll = document.getElementById('updateAcceptAll');
-  updateAcceptAll.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateAcceptAll';
-  });
-
-  const updateSelected = document.getElementById('updateSelected');
-  updateSelected.addEventListener('click', (event) => {
-    event.preventDefault();
-
-    // take from selection
-    const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
-    const consentsDenied = JSON.stringify(['statistics']);
-
-    iframe.src = consentUrl + '?referrer=' + referrer + '&csp_id=' + cspWebsiteId + '&csp_websites=' + cspWebsites + '&exp_days=' + consentExpDays + '&csp_event=updateSelected&consents_approved=' + consentsApproved + '&consents_denied=' + consentsDenied;
-  });
+  setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = ''.concat('expires=', d.toUTCString());
+    document.cookie = ''.concat(cname, '=', cvalue, ';', expires, ';path=/;SameSite=None;Secure');
+  }
 
   /* REWRITE FOR ONETRUST */
-}());
+  updateDeclineAll() {
+    const updateDeclineAll = document.getElementById('updateDeclineAll');
+    const iframe = document.getElementById(this.iframeId);
+    updateDeclineAll.addEventListener('click', (event) => {
+      event.preventDefault();
+      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateDeclineAll');
+    });
+  }
+
+  updateAcceptAll() {
+    const updateAcceptAll = document.getElementById('updateAcceptAll');
+    const iframe = document.getElementById(this.iframeId);
+    updateAcceptAll.addEventListener('click', (event) => {
+      event.preventDefault();
+      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateAcceptAll');
+    });
+  }
+
+  updateSelected() {
+    const updateSelected = document.getElementById('updateSelected');
+    const iframe = document.getElementById(this.iframeId);
+    updateSelected.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      // take from selection
+      const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
+      const consentsDenied = JSON.stringify(['statistics']);
+
+      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=consents_approved', '&consents_approved=', consentsApproved, '&consents_denied=', consentsDenied);
+    });
+  }
+}
+
+const ConsentParentInstance = new CookieConsentParent();
+ConsentParentInstance.run_program();
+
 
   
   </script>
