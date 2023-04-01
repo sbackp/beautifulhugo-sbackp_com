@@ -43,6 +43,7 @@ class CookieConsentParent {
           this.deleteConsent(this.cookieName); // Delete consent
         } else if (event.data.message === 'consents request') {
           this.showConsentBanner(); // Request Consent
+          this.deleteConsent();
         } else if (event.data.message === 'setConsent' || event.data.message === 'consents return') {
           this.hideConsentBanner();
           this.setConsent(event.data.consent); // Consents Iframe returned Consent
@@ -147,6 +148,7 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
+
 
 
   </script>
