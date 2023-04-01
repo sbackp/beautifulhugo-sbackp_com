@@ -87,7 +87,7 @@ Or you can delete these file if you don't need it.
   }
 
   setConsent(value) {
-    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
+    this.setCookie(this.cookieName, value, this.consentExpDays);
   }
 
   deleteConsent() {
@@ -155,5 +155,6 @@ Or you can delete these file if you don't need it.
 
 const ConsentParentInstance = new CookieConsentParent();
 ConsentParentInstance.run_program();
+
 
   </script>
