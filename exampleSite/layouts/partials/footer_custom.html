@@ -34,6 +34,8 @@ class CookieConsentParent {
     window.addEventListener('message', (event) => {
     // Verify the message's origin before trusting it.
       if (event.origin === this.consentUrl) {
+        console.log('message eventlistener');
+        console.log(event.data);
         if (event.data.message === 'consents iframe has loaded') {
           this.iframeLoaded = true;
         } else if (event.data.message === 'consents invalid URL params') {
@@ -147,7 +149,6 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
-
 
 
   </script>
