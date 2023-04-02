@@ -139,7 +139,7 @@ class CookieConsentParent {
 
       // take from selection
       const consentsApproved = JSON.stringify(['necessary', 'marketing', 'functional']);
-      const consentsDenied = JSON.stringify(['statistics']);
+      const consentsDenied = JSON.stringify(['statistics', 'social']);
       iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateSelected', '&consents_approved=', consentsApproved, '&consents_denied=', consentsDenied);
     });
   }
@@ -147,5 +147,6 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
+
 
   </script>
