@@ -17,7 +17,7 @@ class CookieConsentParent {
   constructor(cspWebsiteId, cspWebsites, consentExpDays) {
     this.referrer = document.location.href;
     this.cspWebsiteId = cspWebsiteId; // replace for each collection of websites
-    this.cookieName = ''.concat('consent_', cspWebsiteId);
+    this.consentName = ''.concat('consent_', cspWebsiteId);
     this.cspWebsites = JSON.stringify(cspWebsites); // collection of websites
     this.consentExpDays = consentExpDays; // get from onetrust setting
     this.consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
@@ -39,14 +39,19 @@ class CookieConsentParent {
         } else if (event.data.message === 'consents invalid URL params') {
           /* invalid URL params */
         } else if (event.data.message === 'consents delete') {
-          this.deleteConsent(this.cookieName); // Delete consent
+          this.deleteConsent(this.consentName); // Delete consent
         } else if (event.data.message === 'consents request') {
           this.showConsentBanner(); // Request Consent
           this.deleteConsent();
         } else if (event.data.message === 'consents set' || event.data.message === 'consents return') {
           this.hideConsentBanner();
           this.setConsent(event.data.consents); // Consents Iframe returned Consent
+        } else {
+          /* Consents invalid message */
         }
+      }
+      else {
+        /* Invalid origin */
       }
     });
 
@@ -76,17 +81,17 @@ class CookieConsentParent {
   getConsent() {
     let consent = null;
     try {
-      consent = JSON.parse(this.getCookie(this.cookieName));
+      consent = JSON.parse(this.getCookie(this.consentName));
     } catch (err) { /* empty */ }
     return consent;
   }
 
   setConsent(value) {
-    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
+    this.setCookie(this.consentName, JSON.stringify(value), this.consentExpDays);
   }
 
   deleteConsent() {
-    this.setCookie(this.cookieName, '', 0);
+    this.setCookie(this.consentName, '', 0);
   }
 
   getCookie(cname) {
@@ -147,6 +152,7 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
+
 
 
   </script>
