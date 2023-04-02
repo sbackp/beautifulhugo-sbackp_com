@@ -46,6 +46,7 @@ class CookieConsentParent {
           this.showConsentBanner(); // Request Consent
           this.deleteConsent();
         } else if (event.data.message === 'consents set' || event.data.message === 'consents return') {
+          console.log('yeay!');
           this.hideConsentBanner();
           this.setConsent(event.data.consents); // Consents Iframe returned Consent
         }
@@ -84,7 +85,7 @@ class CookieConsentParent {
   }
 
   setConsent(value) {
-    this.setCookie(this.cookieName, value, this.consentExpDays);
+    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
   }
 
   deleteConsent() {
