@@ -82,7 +82,7 @@ class CookieConsentParent {
   }
 
   setConsent(value) {
-    this.setCookie(this.cookieName, JSON.stringify(value), this.consentExpDays);
+    this.setCookie(this.cookieName, value, this.consentExpDays);
   }
 
   deleteConsent() {
@@ -147,6 +147,7 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
+
 
 
   </script>
