@@ -45,7 +45,6 @@ class CookieConsentParent {
           this.deleteConsent();
         } else if (event.data.message === 'consents set' || event.data.message === 'consents return') {
           this.hideConsentBanner();
-          console.log(event.data.consents);
           this.setConsent(event.data.consents); // Consents Iframe returned Consent
         }
       }
@@ -148,8 +147,5 @@ class CookieConsentParent {
 
 const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
 ConsentParentInstance.run_program();
-
-
-
 
   </script>
