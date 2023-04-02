@@ -13,85 +13,91 @@ Or you can delete these file if you don't need it.
   </form>
 
   <script>
-class CookieConsentParent {
-  constructor(cspWebsiteId, cspWebsites, consentExpDays) {
-    this.referrer = document.location.href;
-    this.cspWebsiteId = cspWebsiteId; // replace for each collection of websites
-    this.consentName = ''.concat('consent_', cspWebsiteId);
-    this.cspWebsites = JSON.stringify(cspWebsites); // collection of websites
-    this.consentExpDays = consentExpDays; // get from onetrust setting
-    this.consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
-    this.iframeLoaded = false;
-    this.iframeId = 'iframename';
+class CookieConsent {
+  constructor() {
+    this.cspEventsList = ['load', 'updateDeclineAll', 'updateAcceptAll', 'updateSelected', 'deleteConsent'];
+    this.consentsList = ['necessary', 'personalization', 'statistics', 'marketing', 'social'];
+
+    this.params = this.getURLParams();
+    this.uid = this.gen_random_uid(100);
   }
 
   run_program() {
-    this.createIframe();
-    this.updateDeclineAll();
-    this.updateAcceptAll();
-    this.updateSelected();
-
-    window.addEventListener('message', (event) => {
-    // Verify the message's origin before trusting it.
-      if (event.origin === this.consentUrl) {
-        if (event.data.message === 'consents iframe has loaded') {
-          this.iframeLoaded = true;
-        } else if (event.data.message === 'consents invalid URL params') {
-          /* invalid URL params */
-        } else if (event.data.message === 'consents delete') {
-          this.deleteConsent(this.consentName); // Delete consent
-        } else if (event.data.message === 'consents request') {
-          this.showConsentBanner(); // Request Consent
-          this.deleteConsent();
-        } else if (event.data.message === 'consents set' || event.data.message === 'consents return') {
-          this.hideConsentBanner();
-          this.setConsent(event.data.consents); // Consents Iframe returned Consent
+    this.postToParent_message('consents iframe has loaded');
+    if (this.params !== null) {
+      if (this.params.csp_event === 'load') {
+        const consents = this.getConsent();
+        if (consents !== null) {
+          this.postToParent_message('consents return', consents);
         } else {
-          /* Consents invalid message */
+          this.postToParent_message('consents request');
         }
+      } else if (this.params.csp_event === 'updateDeclineAll') {
+        this.setConsent([], this.consentsList);
+      } else if (this.params.csp_event === 'updateAcceptAll') {
+        this.setConsent(this.consentsList, []);
+      } else if (this.params.csp_event === 'updateSelected') {
+        this.setConsent(this.params.consents_approved, this.params.consents_denied);
+      } else if (this.params.csp_event === 'deleteConsent') {
+        this.deleteConsent();
+      } else {
+        /* consents invalid message */
+        console.log('consents: invalid message');
       }
-      else {
-        /* Invalid origin */
-      }
-    });
-
-    setTimeout(() => {
-      if (this.iframeLoaded === false) {
-        /* consents iframe has not responded within 2 seconds */
-      }
-    }, 2000);
+    } else {
+      /* consents invalid URL params */
+      console.log('consents: invalid URL params');
+    }
   }
 
-  showConsentBanner() {
-    document.getElementsByTagName('form')[0].setAttribute('style', 'display:block'); // show consent banner
+  postToParent_message(m, c = {}) {
+    const messageObj = { message: m, consents: c };
+    window.parent.postMessage(messageObj, this.params.referrer_url);
   }
 
-  hideConsentBanner() {
-    document.getElementsByTagName('form')[0].setAttribute('style', 'display:none'); // do not show consent banner
-  }
+  setConsent(consentsApproved = [], consentsDenied = []) {
+    const consents = {
+      csp_id: this.params.csp_id,
+      csp_websites: this.params.csp_websites,
+      exp_days: this.params.exp_days,
+      exp_datetime: this.params.exp_datetime,
+      timestamp: this.params.timestamp,
+      consents_approved: consentsApproved,
+      consents_denied: consentsDenied,
+      uid: this.uid,
+      consent_domain: this.params.referrer_domain,
+    };
 
-  createIframe() {
-    const iframe = document.createElement('iframe');
-    iframe.id = this.iframeId;
-    iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=load');
-    iframe.setAttribute('style', 'display:none !important;');
-    document.body.appendChild(iframe);
+    this.setCookie(this.params.consent_name, JSON.stringify(consents), this.params.exp_days);
+    this.postToParent_message('consents set', consents);
   }
 
   getConsent() {
-    let consent = null;
+    /* Get consent. Returns null if error in dictionary or the variable does not exist */
+    let consents = null;
     try {
-      consent = JSON.parse(this.getCookie(this.consentName));
-    } catch (err) { /* empty */ }
-    return consent;
-  }
+      consents = this.getCookie(this.params.consent_name);
+      consents = JSON.parse(consents);
+      consents = this.validateParams(consents);
 
-  setConsent(value) {
-    this.setCookie(this.consentName, JSON.stringify(value), this.consentExpDays);
+      if (this.params.exp_datetime < this.params.timestamp) {
+        consents = null;
+      }
+    } catch (err) { /* empty */ }
+
+    return consents;
   }
 
   deleteConsent() {
-    this.setCookie(this.consentName, '', 0);
+    this.setCookie(this.params.consent_name, '', 0);
+    this.postToParent_message('consents delete');
+  }
+
+  setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    const expires = ''.concat('expires=', d.toUTCString());
+    document.cookie = ''.concat(cname, '=', cvalue, ';', expires, ';path=/;SameSite=None;Secure');
   }
 
   getCookie(cname) {
@@ -110,49 +116,109 @@ class CookieConsentParent {
     return null;
   }
 
-  setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    const expires = ''.concat('expires=', d.toUTCString());
-    document.cookie = ''.concat(cname, '=', cvalue, ';', expires, ';path=/;SameSite=None;Secure');
+  gen_random_uid(length) {
+    /* Generate random ID with timestamp */
+    const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!';
+    const charLength = chars.length;
+    let result = '';
+    for (let i = 0; i < length; i += 1) {
+      result += chars.charAt(Math.floor(Math.random() * charLength));
+    }
+    const timestamp = new Date().getTime();
+    result = ''.concat(result, '-', timestamp);
+    return result;
   }
 
-  /* REWRITE FOR ONETRUST */
-  updateDeclineAll() {
-    const updateDeclineAll = document.getElementById('updateDeclineAll');
-    const iframe = document.getElementById(this.iframeId);
-    updateDeclineAll.addEventListener('click', (event) => {
-      event.preventDefault();
-      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateDeclineAll');
-    });
+  getURLParams() {
+    /*
+    Get url parameters and validate. ,
+    Returns an object params with value null if any param is missing or invalid
+    */
+    let params = {};
+
+    try {
+      const url = new URL(document.location.href); // parameters appended to iframe url
+      const referrer = new URL(url.searchParams.get('referrer')); // url
+
+      params.referrer_url = referrer.href;
+      params.referrer_domain = referrer.host;
+
+      params.csp_id = url.searchParams.get('csp_id'); // consent group id
+      params.consent_name = ''.concat('consent_', params.csp_id);
+      params.csp_websites = JSON.parse(url.searchParams.get('csp_websites')); // consent group websites
+      params.csp_event = url.searchParams.get('csp_event'); // event
+
+      params.exp_days = parseInt(url.searchParams.get('exp_days'), 10); // consent expiration date in days
+      params.timestamp = new Date().getTime();
+      params.exp_datetime = params.timestamp + (86400000 * params.exp_days);
+
+      params.consents_approved = JSON.parse(url.searchParams.get('consents_approved') || '[]');
+      params.consents_denied = JSON.parse(url.searchParams.get('consents_denied') || '[]');
+      params = this.validateParams(params, 'urlparams');
+    } catch (err) {
+      params = null;
+    }
+    return params;
   }
 
-  updateAcceptAll() {
-    const updateAcceptAll = document.getElementById('updateAcceptAll');
-    const iframe = document.getElementById(this.iframeId);
-    updateAcceptAll.addEventListener('click', (event) => {
-      event.preventDefault();
-      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateAcceptAll');
-    });
+  validateParams(params, type) {
+    let tempParams = params;
+    try {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const [key, value] of Object.entries(tempParams)) {
+        if (key === 'consents_approved' || key === 'consents_denied' || key === 'csp_websites') {
+          if (Array.isArray(value) !== true) {
+            tempParams = null;
+            break;
+          }
+        } else if (key === 'exp_days' || key === 'timestamp' || key === 'exp_datetime') {
+          if (Number.isInteger(value) !== true) {
+            tempParams = null;
+            break;
+          }
+        } else if (key === 'csp_event') {
+          if (this.cspEventsList.includes(value) !== true) {
+            tempParams = null;
+            break;
+          }
+        } else if (typeof value !== 'string') {
+          tempParams = null;
+          break;
+        }
+      }
+      if (tempParams.csp_event === 'updateSelected') {
+        const tempConsentsList = tempParams.consents_approved.concat(tempParams.consents_denied);
+        if (this.equalsIgnoreOrder(this.consentsList, tempConsentsList) !== true) {
+          tempParams = null;
+        }
+      }
+      // Only share consent if param referrerDomain exists in param cspWebsites
+      if (type === 'urlparams') {
+        if (tempParams.csp_websites.includes(tempParams.referrer_domain) !== true) {
+          tempParams = null;
+        }
+      }
+    } catch (err) {
+      tempParams = null;
+    }
+
+    return tempParams;
   }
 
-  updateSelected() {
-    const updateSelected = document.getElementById('updateSelected');
-    const iframe = document.getElementById(this.iframeId);
-    updateSelected.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      // take from selection
-      const consentsApproved = JSON.stringify(['necessary', 'marketing', 'personalization']);
-      const consentsDenied = JSON.stringify(['statistics', 'social']);
-      iframe.src = ''.concat(this.consentUrl, '?referrer=', this.referrer, '&csp_id=', this.cspWebsiteId, '&csp_websites=', this.cspWebsites, '&exp_days=', this.consentExpDays, '&csp_event=updateSelected', '&consents_approved=', consentsApproved, '&consents_denied=', consentsDenied);
-    });
+  equalsIgnoreOrder(a, b) {
+    if (a.length !== b.length) { return false; }
+    const uniqueValues = new Set([...a, ...b]);
+    for (const v of uniqueValues) {
+      const aCount = a.filter((e) => e === v).length;
+      const bCount = b.filter((e) => e === v).length;
+      if (aCount !== bCount) return false;
+    }
+    return true;
   }
 }
 
-const ConsentParentInstance = new CookieConsentParent('987654', ['sbackp.dk', 'sbackp.com', 'tryg.dk'], 180);
-ConsentParentInstance.run_program();
-
+const consentInstance = new CookieConsent();
+consentInstance.run_program();
 
 
   </script>
