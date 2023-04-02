@@ -43,7 +43,7 @@ class CookieConsentParent {
         } else if (event.data.message === 'consents request') {
           this.showConsentBanner(); // Request Consent
           this.deleteConsent();
-        } else if (event.data.message === 'setConsent' || event.data.message === 'consents return') {
+        } else if (event.data.message === 'consents set' || event.data.message === 'consents return') {
           this.hideConsentBanner();
           this.setConsent(event.data.consent); // Consents Iframe returned Consent
         }
