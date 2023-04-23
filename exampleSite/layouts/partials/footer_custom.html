@@ -14,48 +14,6 @@ Or you can delete these file if you don't need it.
 
   <script>
 
-  class CookieConsentParent {
-    constructor() {
-        this.iframeId = 'cookieConsentIframe';
-        this.iframePagePath = 'https://idyllic-kulfi-7c87be.netlify.app/';
-        this.referrer = document.location.href;
-        this.iframeUrl = ''.concat(this.iframePagePath,'?referrer=',this.referrer);        
-    }
-
-    run_program() {
-        this.insertIframe();
-        this.messageEventSend('test');
-    }
-
-
-    messageEventListener() {
-        window.addEventListener('message', (event) => {
-            if (event.origin === this.consentUrl) {
-                if (event.data.message === 'test conection') {
-                    console.log('received test message');
-                } else {
-                    console.log('received different message');
-                }
-            }
-            
-        });
-    }
-
-    messageEventSend(m) {
-        const iframe = document.getElementById(this.iframeId);
-        iframe.contentWindow.postMessage(m, this.iframePagePath);
-    }
-
-    insertIframe() {
-        const iframe = document.createElement('iframe');
-        iframe.id = this.iframeId;
-        iframe.src = this.iframePagePath;
-        iframe.setAttribute('style', 'display:none !important;');
-        document.body.appendChild(iframe);
-    }
-}
-
-const ConsentParentInstance = new CookieConsentParent();
-ConsentParentInstance.run_program();
+    
     
   </script>
