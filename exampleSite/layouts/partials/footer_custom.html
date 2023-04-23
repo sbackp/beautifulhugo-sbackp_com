@@ -16,7 +16,8 @@ Or you can delete these file if you don't need it.
 
 class CookieConsentParent {
     constructor() {
-        this.consentUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
+        this.iframeUrl = 'https://idyllic-kulfi-7c87be.netlify.app';
+        this.iframeId = 'cookieConsentIframe';
     }
 
     run_program() {
@@ -41,11 +42,18 @@ class CookieConsentParent {
     messageEventSend(message) {
         window.parent.postMessage(message, this.consentUrl);
     }
+
+    insertIframe() {
+        const iframe = document.createElement('iframe');
+        iframe.id = this.iframeId;
+        iframe.src = this.iframeURL;
+        iframe.setAttribute('style', 'display:none !important;');
+        document.body.appendChild(iframe);
+    }
 }
 
 
 const ConsentParentInstance = new CookieConsentParent();
 ConsentParentInstance.run_program();
-
 
   </script>
