@@ -5,12 +5,22 @@
   </head>
   <body>
     <script type="text/javascript">
-      (function(a,b,c,d){
-      a='https://tags.tiqcdn.com/utag/tryg/onetrust-cookie-consent/dev/utag.js';
-      b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
-      a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
-      })();
-    </script>
+var utag_data = {
+  onetrust_base_url : "", // OneTrust Cookie Consent
+  onetrust_data_domain_script : "", // OneTrust Cookie Consent
+  onetrust_custom_svg : "", // OneTrust Cookie Consent
+  tealium_environment : "" // 
+}
+</script>
+
+<!-- Loading script asynchronously -->
+<script type="text/javascript">
+    (function(a,b,c,d){
+    a='https://tags.tiqcdn.com/utag/tryg/onetrust-cookie-consent/dev/utag.js';
+    b=document;c='script';d=b.createElement(c);d.src=a;d.type='text/java'+c;d.async=true;
+    a=b.getElementsByTagName(c)[0];a.parentNode.insertBefore(d,a);
+    })();
+</script>
     {{ partial "nav.html" . }}
     {{ block "header" . }}{{ partial "header.html" . }}{{ end }}
     {{ block "main" . }}{{ end }}
