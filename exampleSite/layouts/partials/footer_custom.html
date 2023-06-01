@@ -137,7 +137,7 @@ Or you can delete these file if you don't need it.
         const messageObj = { message: m, consents: c };
         const iframeElement = document.getElementById(this.iframeId);
         if (iframeElement !== null) {
-            iframeElement.contentWindow.postMessage(messageObj, this.pagePath);
+            iframeElement.contentWindow.postMessage(messageObj, this.iframeDomain);
         }
 
         console.log('parent messageEventSend: ' + m);
