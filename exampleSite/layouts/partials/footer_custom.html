@@ -49,8 +49,8 @@ class crossSiteConsent {
         }
     }
     setNewConsent() {
+        console.log('test: ' + this.disableOnConsentChanged);
         if (this.disableOnConsentChanged === false) {
-            console.log('test: ' + this.disableOnConsentChanged);
             const onetrustActiveGroups = window?.OnetrustActiveGroups || '';
             const consentsApproved = [];
             const consentsDenied = [];
@@ -87,15 +87,17 @@ class crossSiteConsent {
 
         console.log('_________________');
         console.log(consentObj);
+        console.log(OnetrustActiveGroups);
         console.log('_________________');
 
-        for (const [key, value] of Object.entries(this.consentsList)) {
+        /*for (const [key, value] of Object.entries(this.consentsList)) {
             if (consentObj.consentsApproved.indexOf(value) > -1) {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':1'));
             } else {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
             }
         }
+        */
         this.disableOnConsentChanged = false;
 
         const expDatetime = consentObj?.expDatetime;
@@ -214,11 +216,6 @@ class crossSiteConsent {
             })();
 
             window.OptanonWrapper = () => {
-                // If crossSiteConsent does not exist
-                /*if (OneTrust.IsAlertBoxClosed() === false) {
-                    OneTrust.ToggleInfoDisplay();
-                }*/
-
                 // insert iframe. Ensure OneTrust obj has loaded before iframe returns message.
                 this.messageObserve();
                 this.insertIframe();
@@ -233,10 +230,8 @@ class crossSiteConsent {
                 }, 2000);
 
                 window?.OneTrust?.OnConsentChanged(() => {
-                    if (this.disableOnConsentChanged === false) {
-                        console.log('Onetrust trigger - new consent');
-                        this.setNewConsent();
-                    }
+                    console.log('Onetrust trigger - new consent');
+                    this.setNewConsent();
                 });
             }
 
@@ -276,7 +271,5 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-
-
     
   </script>
