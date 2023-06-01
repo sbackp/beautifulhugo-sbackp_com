@@ -8,7 +8,7 @@ Or you can delete these file if you don't need it.
 
   <script>
 
-    class crossSiteConsent {
+   class crossSiteConsent {
     constructor(cspId, cspWebsites) {
         this.cspId = cspId;
         this.cspWebsites = cspWebsites;
@@ -63,7 +63,7 @@ Or you can delete these file if you don't need it.
         }
 
         const consents = {
-            cspID: this.cspID,
+            cspId: this.cspId,
             cspWebsites: this.cspWebsites,
             cspExpDays: this.cspExpDays,
             timestamp: this.timestamp,
@@ -139,6 +139,8 @@ Or you can delete these file if you don't need it.
         if (iframeElement !== null) {
             iframeElement.contentWindow.postMessage(messageObj, this.pagePath);
         }
+
+        console.log('parent messageEventSend: ' + m);
     }
     messageObserve() {
         window.addEventListener('message', (event) => {
