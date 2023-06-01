@@ -219,6 +219,8 @@ class crossSiteConsent {
             })();
 
             window.OptanonWrapper = () => {
+                window?.OneTrust?.SetAlertBoxClosed();
+
                 // insert iframe. Ensure OneTrust obj has loaded before iframe returns message.
                 this.messageObserve();
                 this.insertIframe();
@@ -274,5 +276,7 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
+
+
 
   </script>
