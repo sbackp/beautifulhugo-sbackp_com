@@ -98,12 +98,12 @@ class crossSiteConsent {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
             }
         }
-        
-        //this.disableOnConsentChanged = false;
 
         const expDatetime = consentObj?.expDatetime;
         this.setCookie(JSON.stringify(consentObj), expDatetime);
         // send to kafka
+      
+        this.disableOnConsentChanged = false;
     }
     deleteConsent() {
         this.setCookie(this.cspConsentNameWithId, -1);
