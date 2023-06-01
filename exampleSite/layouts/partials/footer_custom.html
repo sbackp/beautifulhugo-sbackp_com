@@ -7,8 +7,7 @@ Or you can delete these file if you don't need it.
 -->
 
   <script>
-
-   class crossSiteConsent {
+class crossSiteConsent {
     constructor(cspId, cspWebsites) {
         this.cspId = cspId;
         this.cspWebsites = cspWebsites;
@@ -87,13 +86,13 @@ Or you can delete these file if you don't need it.
         console.log(consentObj);
         console.log('_________________');
 
-        for (const [key, value] of Object.entries(this.consentsList)) {
+        /*for (const [key, value] of Object.entries(this.consentsList)) {
             if (consentObj.consentsApproved.indexOf(value) > -1) {
                 OneTrust.UpdateConsent('Category', ''.concat(key, ':1'));
             } else {
                 OneTrust.UpdateConsent('Category', ''.concat(key, ':0'));
             }
-        }
+        }*/
         this.disableOnConsentChanged = false;
 
         const expDatetime = consentObj?.expDatetime;
