@@ -49,35 +49,37 @@ class crossSiteConsent {
         }
     }
     setNewConsent() {
-        const onetrustActiveGroups = window?.OnetrustActiveGroups || '';
-        const consentsApproved = [];
-        const consentsDenied = [];
+        if (this.disableOnConsentChanged === false) {
+            const onetrustActiveGroups = window?.OnetrustActiveGroups || '';
+            const consentsApproved = [];
+            const consentsDenied = [];
 
-        for (const [key, value] of Object.entries(this.consentsList)) {
-            if (onetrustActiveGroups.indexOf(key) > -1) {
-                consentsApproved.push(value);
-            } else {
-                consentsDenied.push(value);
+            for (const [key, value] of Object.entries(this.consentsList)) {
+                if (onetrustActiveGroups.indexOf(key) > -1) {
+                    consentsApproved.push(value);
+                } else {
+                    consentsDenied.push(value);
+                }
             }
+
+            const consents = {
+                cspId: this.cspId,
+                cspWebsites: this.cspWebsites,
+                cspExpDays: this.cspExpDays,
+                timestamp: this.timestamp,
+                expDatetime: this.expDatetime,
+                consentsApproved: consentsApproved,
+                consentsDenied: consentsDenied,
+                consentId: this.consentId,
+                consentDomain: this.origin,
+                consentURL: this.pagePath,
+                visitid: this.visitid
+            };
+
+            this.setCookie(JSON.stringify(consents), this.expDatetime);
+            this.messageEventSend('set consent', consents);
+            // send to kafka
         }
-
-        const consents = {
-            cspId: this.cspId,
-            cspWebsites: this.cspWebsites,
-            cspExpDays: this.cspExpDays,
-            timestamp: this.timestamp,
-            expDatetime: this.expDatetime,
-            consentsApproved: consentsApproved,
-            consentsDenied: consentsDenied,
-            consentId: this.consentId,
-            consentDomain: this.origin,
-            consentURL: this.pagePath,
-            visitid: this.visitid
-        };
-
-        this.setCookie(JSON.stringify(consents), this.expDatetime);
-        this.messageEventSend('set consent', consents);
-        // send to kafka
     }
     setCrossConsent(consentObj) {
         this.disableOnConsentChanged = true;
@@ -273,6 +275,7 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
+
 
 
     
