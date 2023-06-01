@@ -88,6 +88,7 @@ class crossSiteConsent {
         console.log('_________________');
         console.log(consentObj);
         console.log(OnetrustActiveGroups);
+        console.log('disableOnConsentChanged: ' + str(this.disableOnConsentChanged));
         console.log('_________________');
 
         for (const [key, value] of Object.entries(this.consentsList)) {
@@ -271,6 +272,8 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
+
+
 
 
   </script>
