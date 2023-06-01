@@ -88,9 +88,9 @@ class crossSiteConsent {
 
         for (const [key, value] of Object.entries(this.consentsList)) {
             if (consentObj.consentsApproved.indexOf(value) > -1) {
-                OneTrust.UpdateConsent('Category', ''.concat(key, ':1'));
+                window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':1'));
             } else {
-                OneTrust.UpdateConsent('Category', ''.concat(key, ':0'));
+                window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
             }
         }
         this.disableOnConsentChanged = false;
@@ -229,7 +229,7 @@ class crossSiteConsent {
                     }
                 }, 2000);
 
-                OneTrust.OnConsentChanged(() => {
+                window?.OneTrust?.OnConsentChanged(() => {
                     if (this.disableOnConsentChanged === false) {
                         console.log('Onetrust trigger - new consent');
                         this.setNewConsent();
@@ -273,5 +273,7 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
+
+
     
   </script>
