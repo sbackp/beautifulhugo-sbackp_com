@@ -82,6 +82,11 @@ Or you can delete these file if you don't need it.
     }
     setCrossConsent(consentObj) {
         this.disableOnConsentChanged = true;
+
+        console.log('_________________');
+        console.log(consentObj);
+        console.log('_________________');
+
         for (const [key, value] of Object.entries(this.consentsList)) {
             if (consentObj.consentsApproved.indexOf(value) > -1) {
                 OneTrust.UpdateConsent('Category', ''.concat(key, ':1'));
@@ -269,5 +274,7 @@ Or you can delete these file if you don't need it.
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
+
+
     
   </script>
