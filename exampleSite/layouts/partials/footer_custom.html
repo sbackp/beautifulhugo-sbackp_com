@@ -83,6 +83,8 @@ class crossSiteConsent {
         }
     }
     setCrossConsent(consentObj) {
+        this.disableOnConsentChanged = true;
+
         console.log('_________________');
         console.log(consentObj);
         console.log(OnetrustActiveGroups);
@@ -100,6 +102,10 @@ class crossSiteConsent {
         const expDatetime = consentObj?.expDatetime;
         this.setCookie(JSON.stringify(consentObj), expDatetime);
         // send to kafka
+
+        setTimeout(() => {
+            this.disableOnConsentChanged = false;
+        }, 2000);
     }
     deleteConsent() {
         this.setCookie(this.cspConsentNameWithId, -1);
@@ -156,10 +162,8 @@ class crossSiteConsent {
                 if (event.data.message === 'load') {
                     if (event.data.status === 'return consents') {
                         console.log('return consents');
-                        this.disableOnConsentChanged = true;
                         this.setCrossConsent(event.data.consents);
                     } else if (event.data.status === 'no consents') {
-                        this.disableOnConsentChanged = false;
                         console.log('no consents');
                         this.utilityOnetrustToggle();
                     } else if (event.data.status === 'invalid URL params') {
@@ -270,7 +274,5 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-
-
 
   </script>
