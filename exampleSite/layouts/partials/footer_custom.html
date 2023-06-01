@@ -219,9 +219,12 @@ class crossSiteConsent {
             })();
 
             window.OptanonWrapper = () => {
+                console.log('OptanonWrapper: 1');
                 // insert iframe. Ensure OneTrust obj has loaded before iframe returns message.
                 this.messageObserve();
                 this.insertIframe();
+
+                console.log('OptanonWrapper: 2');
 
                 // used in case iframe does not respond within two seconds.
                 // Ensures that we always have a consent even if iframe cross-site consent fails
@@ -232,10 +235,14 @@ class crossSiteConsent {
                     }
                 }, 2000);
 
+                console.log('OptanonWrapper: 3');
+
                 window?.OneTrust?.OnConsentChanged(() => {
                     console.log('Onetrust trigger - new consent');
                     this.setNewConsent();
                 });
+
+                console.log('OptanonWrapper: 4');
             }
 
         }
