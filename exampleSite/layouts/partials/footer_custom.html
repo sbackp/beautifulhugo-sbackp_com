@@ -90,14 +90,14 @@ class crossSiteConsent {
         console.log(OnetrustActiveGroups);
         console.log('_________________');
 
-        /*for (const [key, value] of Object.entries(this.consentsList)) {
+        for (const [key, value] of Object.entries(this.consentsList)) {
             if (consentObj.consentsApproved.indexOf(value) > -1) {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':1'));
             } else {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
             }
         }
-        */
+        
         this.disableOnConsentChanged = false;
 
         const expDatetime = consentObj?.expDatetime;
@@ -271,5 +271,6 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-    
+
+
   </script>
