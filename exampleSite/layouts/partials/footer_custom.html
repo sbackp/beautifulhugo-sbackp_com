@@ -105,7 +105,7 @@ class crossSiteConsent {
 
         setTimeout(() => {
             this.disableOnConsentChanged = false;
-        }, 2000);
+        }, 1000);
     }
     deleteConsent() {
         this.setCookie(this.cspConsentNameWithId, -1);
@@ -219,8 +219,6 @@ class crossSiteConsent {
             })();
 
             window.OptanonWrapper = () => {
-                window?.OneTrust?.SetAlertBoxClosed();
-
                 // insert iframe. Ensure OneTrust obj has loaded before iframe returns message.
                 this.messageObserve();
                 this.insertIframe();
@@ -247,9 +245,11 @@ class crossSiteConsent {
         const consent = this.getLocalConsent();
         if (consent?.visitid !== '' && this.visitid !== '' && consent?.visitid === this.visitid) {
             // use current consent
+            console.log('utilityOnetrustToggle: current');
         } else {
             // request new consent
             window?.OneTrust?.ToggleInfoDisplay();
+            console.log('utilityOnetrustToggle: new');
         }
     }
 
