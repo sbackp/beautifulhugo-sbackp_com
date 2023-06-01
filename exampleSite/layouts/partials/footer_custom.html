@@ -50,6 +50,7 @@ class crossSiteConsent {
     }
     setNewConsent() {
         if (this.disableOnConsentChanged === false) {
+            console.log('test: ' + this.disableOnConsentChanged);
             const onetrustActiveGroups = window?.OnetrustActiveGroups || '';
             const consentsApproved = [];
             const consentsDenied = [];
@@ -275,7 +276,6 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-
 
 
     
