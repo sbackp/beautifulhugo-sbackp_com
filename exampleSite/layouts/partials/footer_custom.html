@@ -205,6 +205,7 @@ class crossSiteConsent {
         };
 
         if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
+            console.log('OptanonWrapper: 0');
             ((a, b, c, d) => {
                 a = u.data['base_url'];
                 b = document;
