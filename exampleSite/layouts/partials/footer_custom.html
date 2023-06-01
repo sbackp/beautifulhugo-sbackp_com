@@ -155,7 +155,7 @@ Or you can delete these file if you don't need it.
                 if (event.data.message === 'load') {
                     if (event.data.status === 'return consents') {
                         console.log('return consents');
-                        this.setCrossConsent(event.data.consent);
+                        this.setCrossConsent(event.data.consents);
                     } else if (event.data.status === 'no consents') {
                         console.log('no consents');
                         this.utilityOnetrustToggle();
@@ -274,7 +274,6 @@ Or you can delete these file if you don't need it.
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-
 
     
   </script>
