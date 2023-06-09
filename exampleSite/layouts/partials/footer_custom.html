@@ -49,8 +49,9 @@ class crossSiteConsent {
         }
     }
     setNewConsent() {
-        console.log('test: ' + this.disableOnConsentChanged);
-        if (this.disableOnConsentChanged === false) {
+        const that = this;
+        console.log('test: ' + that.disableOnConsentChanged);
+        if (that.disableOnConsentChanged === false) {
             const onetrustActiveGroups = window?.OnetrustActiveGroups || '';
             const consentsApproved = [];
             const consentsDenied = [];
@@ -79,7 +80,7 @@ class crossSiteConsent {
 
             this.setCookie(JSON.stringify(consents), this.expDatetime);
             this.messageEventSend('set consent', consents);
-            // send to kafka
+            
         }
     }
     setCrossConsent(consentObj) {
@@ -101,7 +102,7 @@ class crossSiteConsent {
 
         const expDatetime = consentObj?.expDatetime;
         this.setCookie(JSON.stringify(consentObj), expDatetime);
-        // send to kafka
+        
 
         setTimeout(() => {
             this.disableOnConsentChanged = false;
@@ -135,7 +136,7 @@ class crossSiteConsent {
     }
 
     generateUUID(length) {
-        /* Generate random ID with timestamp */
+         
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!';
         let result = '';
         for (let i = 0; i < length; i += 1) {
@@ -195,13 +196,13 @@ class crossSiteConsent {
         let b = {},
             u = {};
         u.data = {
-            /* Initialize default tag parameter values here */
-            /* Examples: */
-            /* "account_id" : "1234567" */
+             
+             
+             
             "base_url": "https://cdn.cookielaw.org/consent/ea1a40ca-a25d-43c5-b96a-fc66e962adac-test/otSDKStub.js",
             "data_domain_script": "ea1a40ca-a25d-43c5-b96a-fc66e962adac-test",
             "custom_svg": ""
-            /* A value mapped to "account_id" or "base_url" in TiQ will replace these default values. */
+             
         };
 
         if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
@@ -221,14 +222,14 @@ class crossSiteConsent {
 
             window.OptanonWrapper = () => {
                 console.log('OptanonWrapper: 1');
-                // insert iframe. Ensure OneTrust obj has loaded before iframe returns message.
+                
                 this.messageObserve();
                 this.insertIframe();
 
                 console.log('OptanonWrapper: 2');
 
-                // used in case iframe does not respond within two seconds.
-                // Ensures that we always have a consent even if iframe cross-site consent fails
+                
+                
                 setTimeout(() => {
                     if (this.iframeLoaded === false) {
                         console.log('consents iframe has not responded within two seconds');
@@ -252,10 +253,10 @@ class crossSiteConsent {
     utilityOnetrustToggle() {
         const consent = this.getLocalConsent();
         if (consent?.visitid !== '' && this.visitid !== '' && consent?.visitid === this.visitid) {
-            // use current consent
+            
             console.log('utilityOnetrustToggle: current');
         } else {
-            // request new consent
+            
             window?.OneTrust?.ToggleInfoDisplay();
             console.log('utilityOnetrustToggle: new');
         }
@@ -284,7 +285,6 @@ class crossSiteConsent {
 
 const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 t.main();
-
 
 
   </script>
