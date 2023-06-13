@@ -8,6 +8,7 @@ Or you can delete these file if you don't need it.
   <script>
 
 
+
 class CrossSiteConsent {
     constructor(cspId, cspWebsites) {
         this.cspId = cspId;
@@ -216,27 +217,6 @@ class CrossSiteConsent {
         };
 
         if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
-            if (window.KJUR) {
-                const oHeader = { alg: 'HS256', typ: 'JWT' };
-                var oPayload = {};
-                oPayload.sub = "12341234";
-                oPayload.name = 'John Doe';
-                oPayload.iat = KJUR.jws.IntDate.get('now');
-                oPayload.nbf = KJUR.jws.IntDate.get('now');
-                oPayload.exp = KJUR.jws.IntDate.get('now + 1day');
-                const sHeader = JSON.stringify(oHeader);
-                const sPayload = JSON.stringify(oPayload);
-                const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
-
-                window.OneTrust = {
-                    dataSubjectParams: {
-                        id: "12341234",
-                        isAnonymous: false,
-                        token: sJWT,
-                    }
-                };
-            }
-
             ((a, b, c, d) => {
                 a = u.data['base_url'];
                 b = document;
@@ -251,7 +231,7 @@ class CrossSiteConsent {
             })();
 
             window.OptanonWrapper = () => {
-                this.messageObserve();
+                /*this.messageObserve();
                 this.insertIframe();
 
                 setTimeout(() => {
@@ -259,7 +239,61 @@ class CrossSiteConsent {
                         console.log('consents iframe has not responded within two seconds');
                         this.utilityOnetrustToggle();
                     }
-                }, 2000);
+                }, 2000);*/
+
+                /* Style OneTrust - Start*/
+                function ot_insert_brand_image(imagePath, imageType) {
+                    let ot_pc_logo = document.querySelectorAll('#onetrust-pc-sdk .ot-pc-logo');
+                    if (imagePath && imageType === 'svg' && ot_pc_logo.length > 0) {
+                        ot_pc_logo[0].role = imageType;
+                        ot_pc_logo[0].innerHTML = imagePath;
+                    }
+                }
+                function r() {
+                    let update_button = document.querySelectorAll('#onetrust-pc-sdk .save-preference-btn-handler');
+                    let checkboxes = document.querySelectorAll("#onetrust-pc-sdk input[type='checkbox'].category-switch-handler");
+                    let checkboxes_length = checkboxes.length;
+
+                    for (var i = 0; i <= checkboxes.length - 1; i++) {
+                        if (checkboxes[i].checked === true) {
+                            checkboxes_length -= 1
+                        }
+                    }
+
+                    if (checkboxes_length === 0 || checkboxes_length === checkboxes.length) {
+                        update_button[0].setAttribute('style', 'display: none !important;');
+                    } else {
+                        update_button[0].setAttribute('style', 'display: inline-block !important;');
+                    }
+                }
+
+                function e() {
+                    let allow_all_cookies_btn = document.querySelectorAll("#onetrust-pc-sdk #accept-recommended-btn-handler");
+                    let btn_container = document.querySelectorAll("#onetrust-pc-sdk .ot-btn-container");
+                    if (allow_all_cookies_btn.length > 0 && btn_container.length > 0) {
+                        btn_container[0].append(allow_all_cookies_btn[0]);
+                    }
+
+                    let ot_pc_logo = document.querySelectorAll('#onetrust-pc-sdk .ot-pc-logo');
+                    if (u.data['custom_svg'] !== '' && ot_pc_logo.length > 0) {
+                        ot_insert_brand_image(imagePath = u.data['custom_svg'], imageType = 'svg');
+                    }
+
+                    /* Hide Allow selection */
+                    r();
+
+                    // add event listeners
+                    let ot_cat_grp_input = document.querySelectorAll('#onetrust-pc-sdk .ot-cat-grp input.category-switch-handler');
+                    if (ot_cat_grp_input.length > 0) {
+                        for (var i = 0; i <= ot_cat_grp_input.length - 1; i++) {
+                            ot_cat_grp_input[i].addEventListener('click', r, false);
+                        }
+                    }
+                    /* Hide Allow selection END */
+                }
+                /* Style OneTrust - END */
+
+                e();
 
                 window?.OneTrust?.OnConsentChanged(() => {
                     const that = this;
