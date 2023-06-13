@@ -7,8 +7,6 @@ Or you can delete these file if you don't need it.
 -->
   <script>
 
-
-
 let b = {};
 let u = {};
 u.data = {
@@ -115,12 +113,12 @@ if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base
         }
          REMOVE iframe END*/
 
-        if (Optanon.IsAlertBoxClosed() === false) {
+        /*if (Optanon.IsAlertBoxClosed() === false) {
             Optanon.ToggleInfoDisplay();
             e();
         } else {
             e();
-        }
+        }*/
 
         Optanon.OnConsentChanged(function () {
             console.log('Onetrust trigger - new consent');
