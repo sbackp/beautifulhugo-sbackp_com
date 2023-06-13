@@ -7,303 +7,163 @@ Or you can delete these file if you don't need it.
 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script> 
   <script>
-class CrossSiteConsent {
-    constructor(cspId, cspWebsites) {
-        this.cspId = cspId;
-        this.cspWebsites = cspWebsites;
 
-        this.cspExpDays = 182;
-        this.iframeLoaded = false;
-        this.iframeId = 'onetrustCrossSiteConsent';
-        this.iframeDomain = 'https://idyllic-kulfi-7c87be.netlify.app';
-        this.consentsList = { C0001: 'necessary', C0003: 'personalization', C0002: 'statistics', C0004: 'marketing', BG32: 'social' };
+let b = {};
+let u = {};
+u.data = {
+    /* Initialize default tag parameter values here */
+    /* Examples: */
+    /* "account_id" : "1234567" */
+    "base_url": "https://cdn.cookielaw.org/consent/ea1a40ca-a25d-43c5-b96a-fc66e962adac-test/otSDKStub.js",
+    "data_domain_script": "ea1a40ca-a25d-43c5-b96a-fc66e962adac-test",
+    "custom_svg": ""
+    /* A value mapped to "account_id" or "base_url" in TiQ will replace these default values. */
+};
 
-        this.cspConsentNameWithId = ''.concat('cookieconsent', '_', this.cspId);
-        this.timestamp = new Date().getTime();
-        this.expDatetime = this.timestamp + (86400000 * this.cspExpDays);
-        this.consentId = this.generateUUID(20);
 
-        this.host = document.location.host;
-        this.origin = document.location.origin;
-        this.pathname = document.location.pathname;
-        this.pagePath = ''.concat(this.origin, this.pathname);
-        this.iframeUrl = ''.concat(this.iframeDomain, '?referrer=', this.pagePath, '&cspid=', this.cspId, '&cspwebsites=', this.cspWebsites);
 
-        this.disableOnConsentChanged = false;
+/* Start Tag Sending Code */
 
-        this.tealium_session_id = window?.utag?.data?.tealium_session_id || '';
-        this.tealium_visitor_id = window?.utag?.data?.tealium_visitor_id || '';
+// Insert your tag sending code here.
+if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
+    if (window.KJUR) {
+        const oHeader = { alg: 'HS256', typ: 'JWT' };
+        var oPayload = {};
+        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
+        const sHeader = JSON.stringify(oHeader);
+        const sPayload = JSON.stringify(oPayload);
+        const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
 
-        this.tealium_account = '';
-        this.tealium_profile = '';
-    }
-
-    getLocalConsent() {
-        try {
-            let consent = JSON.parse(this.getCookie(this.cspConsentNameWithId));
-            if (consent.expDatetime <= this.timestamp) {
-                consent = null;
-            } else if (consent.cspWebsites.includes(this.host) === false) {
-                consent = null;
+        window.OneTrust = {
+            dataSubjectParams: {
+                id: "test@foo.com",
+                isAnonymous: false,
+                token: sJWT,
             }
-            return consent;
-        } catch (err) {
-            return null;
-        }
-    }
-    setNewConsent() {
-        const onetrustActiveGroups = window?.OnetrustActiveGroups?.split(',') || [];
-        const consentsApproved = [];
-        const consentsDenied = [];
-
-        for (const [key, value] of Object.entries(this.consentsList)) {
-            if (onetrustActiveGroups.includes(key) === true) {
-                consentsApproved.push(value);
-            } else {
-                consentsDenied.push(value);
-            }
-        }
-
-        const consents = {
-            cspId: this.cspId,
-            cspWebsites: this.cspWebsites,
-            cspExpDays: this.cspExpDays,
-            timestamp: this.timestamp,
-            expDatetime: this.expDatetime,
-            consentsApproved: consentsApproved,
-            consentsDenied: consentsDenied,
-            consentId: this.consentId,
-            consentDomain: this.origin,
-            consentURL: this.pagePath,
-            tealium_session_id: this.tealium_session_id
         };
-
-        this.setCookie(JSON.stringify(consents), this.expDatetime);
-        this.messageEventSend('set consent', consents);
-        this.kafkaSendConsent(consents, 'set consent');
     }
-    setCrossSiteConsent(consents = {}) {
-        this.disableOnConsentChanged = true;
+    
+    (function (a, b, c, d) {
+        a = u.data['base_url'];
+        b = document;
+        c = 'script';
+        d = b.createElement(c);
+        d.src = a
+        d.setAttribute("data-domain-script", u.data['data_domain_script']);
+        d.type = 'text/java' + c;
+        d.async = true;
+        a = b.getElementsByTagName(c)[0];
+        a.parentNode.insertBefore(d, a);
+    })();
 
-        for (const [key, value] of Object.entries(this.consentsList)) {
-            if (consents.consentsApproved.indexOf(value) > -1) {
-                window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':1'));
-            } else {
-                window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
+    window.OptanonWrapper = function () {
+        function ot_insert_brand_image(imagePath, imageType) {
+            let ot_pc_logo = document.querySelectorAll('#onetrust-pc-sdk .ot-pc-logo');
+            if (imagePath && imageType === 'svg' && ot_pc_logo.length > 0) {
+                ot_pc_logo[0].role = imageType;
+                ot_pc_logo[0].innerHTML = imagePath;
             }
         }
+        function r() {
+            let update_button = document.querySelectorAll('#onetrust-pc-sdk .save-preference-btn-handler');
+            let checkboxes = document.querySelectorAll("#onetrust-pc-sdk input[type='checkbox'].category-switch-handler");
+            let checkboxes_length = checkboxes.length;
 
-        const expDatetime = consents?.expDatetime;
-        this.setCookie(JSON.stringify(consents), expDatetime);
-        this.kafkaSendConsent(consents, 'cross-site consent');
-
-        setTimeout(() => {
-            this.disableOnConsentChanged = false;
-        }, 1000);
-    }
-    deleteConsent() {
-        window.OneTrust.RejectAll();
-        this.setCookie(this.cspConsentNameWithId, -1);
-        this.messageEventSend('delete consent');
-    }
-    validateConsent(consents = {}) {
-        try {
-            if (['cspWebsites', 'consentsApproved', 'consentsDenied'].every(el => Array.isArray(consents[el])) === false) {
-                consents = null;
-            } else if (['cspExpDays', 'timestamp', 'expDatetime'].every(el => Number.isInteger(consents[el])) === false) {
-                consents = null;
-            } else if (['cspId', 'consentId', 'consentDomain', 'consentURL', 'tealium_session_id'].every(el => typeof (consents[el]) === 'string') === false) {
-                consents = null;
-            }
-        } catch (err) {
-            consents = null;
-        }
-        return consents;
-    }
-
-    getCookie() {
-        const name = ''.concat(this.cspConsentNameWithId, '=');
-        const decodedCookie = decodeURIComponent(document.cookie);
-        const ca = decodedCookie.split(';');
-        for (let i = 0; i < ca.length; i += 1) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) === 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return '';
-    }
-    setCookie(cvalue, expDatetime) {
-        const d = new Date();
-        d.setTime(expDatetime);
-        const expires = ''.concat('expires=', d.toUTCString());
-        document.cookie = ''.concat(this.cspConsentNameWithId, '=', cvalue, ';', expires, ';path=/;SameSite=None;Secure');
-    }
-
-    generateUUID(length) {
-        const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!';
-        let result = '';
-        for (let i = 0; i < length; i += 1) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        result = ''.concat(result, '-', this.timestamp);
-        return result;
-    }
-
-    messageEventSend(m, c = {}) {
-        const messageObj = { message: m, consents: c };
-        const iframeElement = document.getElementById(this.iframeId);
-        if (iframeElement !== null) {
-            iframeElement.contentWindow.postMessage(messageObj, this.iframeDomain);
-        }
-
-        console.log('parent messageEventSend: ' + m);
-    }
-    messageObserve() {
-        const e = document.getElementById(this.iframeId);
-        if (e === null) {
-            window.addEventListener('message', (event) => {
-                if (event.origin === this.iframeDomain) {
-                    this.iframeLoaded = true;
-
-                    if (event.data.message === 'load') {
-                        if (event.data.status === 'return consents') {
-                            console.log('return consents');
-
-                            const consents = this.validateConsent(event.data.consents);
-                            if (consents !== null) {
-                                this.setCrossSiteConsent(consents);
-                            } else {
-                                this.utilityOnetrustToggle();
-                                console.log('invalid consent');
-                            }
-
-                        } else if (event.data.status === 'no consents') {
-                            console.log('no consents');
-                            this.utilityOnetrustToggle();
-                        } else if (event.data.status === 'invalid URL params') {
-                            console.log('invalid URL params');
-                        }
-                    }
+            for (var i = 0; i <= checkboxes.length - 1; i++) {
+                if (checkboxes[i].checked === true) {
+                    checkboxes_length -= 1
                 }
-
-            });
-        }
-    }
-
-    insertIframe() {
-        const e = document.getElementById(this.iframeId);
-        if (e === null) {
-            const iframe = document.createElement('iframe');
-            iframe.setAttribute('id', this.iframeId);
-            iframe.setAttribute('src', this.iframeUrl);
-            iframe.setAttribute('style', 'display:none !important;');
-            document.body.appendChild(iframe);
-        }
-    }
-
-    insertOneTrust() {
-        let b = {},
-            u = {};
-        u.data = {
-            "base_url": "https://cdn.cookielaw.org/consent/ea1a40ca-a25d-43c5-b96a-fc66e962adac-test/otSDKStub.js",
-            "data_domain_script": "ea1a40ca-a25d-43c5-b96a-fc66e962adac-test",
-            "custom_svg": ""
-        };
-
-        if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
-            if (window.KJUR) {
-                const oHeader = { alg: 'HS256', typ: 'JWT' };
-                var oPayload = {};
-                oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
-                const sHeader = JSON.stringify(oHeader);
-                const sPayload = JSON.stringify(oPayload);
-                const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
-
-                window.OneTrust = {
-                    dataSubjectParams: {
-                        id: "test@foo.com",
-                        isAnonymous: false,
-                        token: sJWT,
-                    }
-                };
             }
 
-            ((a, b, c, d) => {
-                a = u.data['base_url'];
-                b = document;
-                c = 'script';
-                d = b.createElement(c);
-                d.src = a
-                d.setAttribute("data-domain-script", u.data['data_domain_script']);
-                d.type = 'text/java' + c;
-                d.async = true;
-                a = b.getElementsByTagName(c)[0];
-                a.parentNode.insertBefore(d, a);
-            })();
+            if (checkboxes_length === 0 || checkboxes_length === checkboxes.length) {
+                update_button[0].setAttribute('style', 'display: none !important;');
+            } else {
+                update_button[0].setAttribute('style', 'display: inline-block !important;');
+            }
+        }
 
-            window.OptanonWrapper = () => {
-                this.messageObserve();
-                this.insertIframe();
-
-                setTimeout(() => {
-                    if (this.iframeLoaded === false) {
-                        console.log('consents iframe has not responded within two seconds');
-                        this.utilityOnetrustToggle();
-                    }
-                }, 2000);
-
-                window?.OneTrust?.OnConsentChanged(() => {
-                    const that = this;
-                    if (that.disableOnConsentChanged === false) {
-                        this.setNewConsent();
-                    }
-                });
+        function e() {
+            let allow_all_cookies_btn = document.querySelectorAll("#onetrust-pc-sdk #accept-recommended-btn-handler");
+            let btn_container = document.querySelectorAll("#onetrust-pc-sdk .ot-btn-container");
+            if (allow_all_cookies_btn.length > 0 && btn_container.length > 0) {
+                btn_container[0].append(allow_all_cookies_btn[0]);
             }
 
+            let ot_pc_logo = document.querySelectorAll('#onetrust-pc-sdk .ot-pc-logo');
+            if (u.data['custom_svg'] !== '' && ot_pc_logo.length > 0) {
+                ot_insert_brand_image(imagePath = u.data['custom_svg'], imageType = 'svg');
+            }
+
+            /* Hide Allow selection */
+            r();
+
+            // add event listeners
+            let ot_cat_grp_input = document.querySelectorAll('#onetrust-pc-sdk .ot-cat-grp input.category-switch-handler');
+            if (ot_cat_grp_input.length > 0) {
+                for (var i = 0; i <= ot_cat_grp_input.length - 1; i++) {
+                    ot_cat_grp_input[i].addEventListener('click', r, false);
+                }
+            }
+            /* Hide Allow selection END */
         }
-    }
 
-    utilityOnetrustToggle() {
-        const consent = this.getLocalConsent();
-        if (consent?.tealium_session_id !== '' && this.tealium_session_id !== '' && consent?.tealium_session_id === this.tealium_session_id) {
+        /* REMOVE iframe !
+        let my_test = document.querySelectorAll('#onetrust-pc-sdk .ot-text-resize');
+        if (my_test.length > 0) {
+            my_test[0].parentNode.removeChild(my_test[0]);
+        }
+         REMOVE iframe END*/
 
-            console.log('utilityOnetrustToggle: current');
+        if (Optanon.IsAlertBoxClosed() === false) {
+            Optanon.ToggleInfoDisplay();
+            e();
         } else {
-
-            window?.OneTrust?.ToggleInfoDisplay();
-            console.log('utilityOnetrustToggle: new');
+            e();
         }
-    }
 
-    kafkaSendConsent(consents = {}, consent_type) {
-        if (this.tealium_account !== '' && this.tealium_profile !== '') {
-            const te = JSON.stringify({
-                tealium_account: this.tealium_account,
-                tealium_profile: this.tealium_profile,
-                consent_event: consent_type,
-                tealium_event: 'set_consent',
-                tealium_visitor_id: this.tealium_visitor_id,
-                tealium_session_id: this.tealium_session_id,
-                consents: consents,
-            });
+        Optanon.OnConsentChanged(function () {
+            console.log('Onetrust trigger - new consent');
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "https://collect.tealiumiq.com/event");
-            xhr.send(te);
-        }
-    }
+            //Identity consent events. Is used to trigger tags on cookie consent events
+            if (Array.isArray(b.custom_event) === true) {
+                if (b['custom_event'].includes('cookie_consent_given') === false) {
+                    b["custom_event"].push("cookie_consent_given");
+                }
+            } else {
+                b["custom_event"] = ["cookie_consent_given"];
+            }
 
-    main() {
-        if (this.cspWebsites.includes(this.host) === true) {
-            this.insertOneTrust();
-        }
+            let cookie_consents_approved_onetrust = [],
+                cookie_consent_necessary_bool_onetrust = false,
+                cookie_consent_statistical_bool_onetrust = false,
+                cookie_consent_personalization_bool_onetrust = false,
+                cookie_consent_marketing_bool_onetrust = false;
+
+            if (OnetrustActiveGroups.indexOf('C0001') > -1) {
+                cookie_consent_necessary_bool_onetrust = true;
+                cookie_consents_approved_onetrust.push('cookie_cat_necessary');
+            }
+            if (OnetrustActiveGroups.indexOf('C0002') > -1) {
+                cookie_consent_statistical_bool_onetrust = true;
+                cookie_consents_approved_onetrust.push('cookie_cat_statistic');
+            }
+            if (OnetrustActiveGroups.indexOf('C0003') > -1) {
+                cookie_consent_personalization_bool_onetrust = true;
+                cookie_consents_approved_onetrust.push('cookie_cat_functional');
+            }
+            if (OnetrustActiveGroups.indexOf('C0004') > -1) {
+                cookie_consent_marketing_bool_onetrust = true;
+                cookie_consents_approved_onetrust.push('cookie_cat_marketing');
+            }
+
+            b.cookie_consent_necessary_bool = cookie_consent_necessary_bool_onetrust;
+            b.cookie_consent_statistical_bool = cookie_consent_statistical_bool_onetrust;
+            b.cookie_consent_personalization_bool = cookie_consent_personalization_bool_onetrust;
+            b.cookie_consent_marketing_bool = cookie_consent_marketing_bool_onetrust;
+            b.cookie_consents_approved = cookie_consents_approved_onetrust;
+
+            //utag.view(b, false);
+        });
     }
 }
-
-const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
-crossSiteConsent.main();
   </script>
