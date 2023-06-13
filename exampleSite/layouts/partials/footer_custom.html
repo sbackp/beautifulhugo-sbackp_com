@@ -8,6 +8,7 @@ Or you can delete these file if you don't need it.
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script> 
   <script>
 
+
 let b = {};
 let u = {};
 u.data = {
@@ -29,7 +30,7 @@ if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base
     if (window.KJUR) {
         const oHeader = { alg: 'HS256', typ: 'JWT' };
         var oPayload = {};
-        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
+        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = new Date().getTime();
         const sHeader = JSON.stringify(oHeader);
         const sPayload = JSON.stringify(oPayload);
         const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
@@ -162,7 +163,7 @@ if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base
             b.cookie_consent_marketing_bool = cookie_consent_marketing_bool_onetrust;
             b.cookie_consents_approved = cookie_consents_approved_onetrust;
 
-            //utag.view(b, false);
+            utag.view(b, false);
         });
     }
 }
