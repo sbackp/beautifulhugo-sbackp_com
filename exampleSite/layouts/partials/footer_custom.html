@@ -206,24 +206,6 @@ class CrossSiteConsent {
     }
 
     insertOneTrust() {
-        var oHeader = { alg: 'HS256', typ: 'JWT' };
-        // Payload
-        var oPayload = {};
-        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
-        // Sign JWT, password=616161
-        var sHeader = JSON.stringify(oHeader);
-        var sPayload = JSON.stringify(oPayload);
-        var sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
-
-        window.OneTrust = {
-            dataSubjectParams: {
-                id: "test@foo.com",
-                isAnonymous: false,
-                token: sJWT,
-            }
-        };
-
-
         let b = {},
             u = {};
         u.data = {
@@ -233,6 +215,23 @@ class CrossSiteConsent {
         };
 
         if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
+            if (window.KJUR) {
+                const oHeader = { alg: 'HS256', typ: 'JWT' };
+                var oPayload = {};
+                oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
+                const sHeader = JSON.stringify(oHeader);
+                const sPayload = JSON.stringify(oPayload);
+                const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
+
+                window.OneTrust = {
+                    dataSubjectParams: {
+                        id: "test@foo.com",
+                        isAnonymous: false,
+                        token: sJWT,
+                    }
+                };
+            }
+
             ((a, b, c, d) => {
                 a = u.data['base_url'];
                 b = document;
@@ -307,6 +306,4 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
-
-
   </script>
