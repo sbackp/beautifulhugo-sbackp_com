@@ -6,6 +6,10 @@ Or you can delete these file if you don't need it.
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.19.1/vis.js" integrity="sha256-HdIuWBZj4eftihsoDCJoMYjZi6aNVaw7YlUpzKT3ZxI=" crossorigin="anonymous"></script>
 -->
   <script>
+let ssss = document.createElement('script');
+ssss.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js');
+document.body.appendChild(ssss);
+
 class CrossSiteConsent {
     constructor(cspId, cspWebsites) {
         this.cspId = cspId;
@@ -222,7 +226,7 @@ class CrossSiteConsent {
                 const sPayload = JSON.stringify(oPayload);
                 const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
 
-                var OneTrust = {
+                window.OneTrust = {
                     dataSubjectParams: {
                         id: "12341234",
                         isAnonymous: false,
