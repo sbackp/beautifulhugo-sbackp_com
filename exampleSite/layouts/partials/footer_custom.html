@@ -21,7 +21,7 @@ class crossSiteConsent {
         this.cspConsentNameWithId = ''.concat('cookieconsent', '_', this.cspId);
         this.timestamp = new Date().getTime();
         this.expDatetime = this.timestamp + (86400000 * this.cspExpDays);
-        this.consentId = this.generateUUID(100);
+        this.consentId = this.generateUUID(20);
 
         this.host = document.location.host;
         this.origin = document.location.origin;
@@ -31,7 +31,11 @@ class crossSiteConsent {
 
         this.disableOnConsentChanged = false;
 
-        this.visitid = window?.utag?.data?.tealium_session_id || '';
+        this.tealium_session_id = window?.utag?.data?.tealium_session_id || '';
+        this.tealium_visitor_id = window?.utag?.data?.tealium_visitor_id || '';
+
+        this.tealium_account = '';
+        this.tealium_profile = '';
     }
 
     getLocalConsent() {
@@ -71,26 +75,28 @@ class crossSiteConsent {
             consentId: this.consentId,
             consentDomain: this.origin,
             consentURL: this.pagePath,
-            visitid: this.visitid
+            tealium_session_id: this.tealium_session_id
         };
 
         this.setCookie(JSON.stringify(consents), this.expDatetime);
-        this.messageEventSend('set consent', consents);            
+        this.messageEventSend('set consent', consents);
+        this.kafkaSendConsent(consents, 'set consent');
     }
-    setCrossConsent(consentObj) {
+    setCrossSiteConsent(consents = {}) {
         this.disableOnConsentChanged = true;
 
         for (const [key, value] of Object.entries(this.consentsList)) {
-            if (consentObj.consentsApproved.indexOf(value) > -1) {
+            if (consents.consentsApproved.indexOf(value) > -1) {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':1'));
             } else {
                 window?.OneTrust?.UpdateConsent('Category', ''.concat(key, ':0'));
             }
         }
 
-        const expDatetime = consentObj?.expDatetime;
-        this.setCookie(JSON.stringify(consentObj), expDatetime);
-        
+        const expDatetime = consents?.expDatetime;
+        this.setCookie(JSON.stringify(consents), expDatetime);
+        this.kafkaSendConsent(consents, 'cross-site consent');
+
         setTimeout(() => {
             this.disableOnConsentChanged = false;
         }, 1000);
@@ -100,19 +106,19 @@ class crossSiteConsent {
         this.setCookie(this.cspConsentNameWithId, -1);
         this.messageEventSend('delete consent');
     }
-    validateConsent(consentsObj = {}) {
+    validateConsent(consents = {}) {
         try {
-            if (['cspWebsites', 'consentsApproved', 'consentsDenied'].every(el => Array.isArray(consentsObj[el])) === false) {
-                consentsObj = null;
-            } else if (['cspExpDays', 'timestamp', 'expDatetime'].every(el => Number.isInteger(consentsObj[el])) === false) {
-                consentsObj = null;
-            } else if (['cspId', 'consentId', 'consentDomain', 'consentURL', 'visitid'].every(el => typeof (consentsObj[el]) === 'string') === false) {
-                consentsObj = null;
+            if (['cspWebsites', 'consentsApproved', 'consentsDenied'].every(el => Array.isArray(consents[el])) === false) {
+                consents = null;
+            } else if (['cspExpDays', 'timestamp', 'expDatetime'].every(el => Number.isInteger(consents[el])) === false) {
+                consents = null;
+            } else if (['cspId', 'consentId', 'consentDomain', 'consentURL', 'tealium_session_id'].every(el => typeof (consents[el]) === 'string') === false) {
+                consents = null;
             }
         } catch (err) {
-            consentsObj = null;
+            consents = null;
         }
-        return consentsObj;
+        return consents;
     }
 
     getCookie() {
@@ -137,7 +143,7 @@ class crossSiteConsent {
         document.cookie = ''.concat(this.cspConsentNameWithId, '=', cvalue, ';', expires, ';path=/;SameSite=None;Secure');
     }
 
-    generateUUID(length) {      
+    generateUUID(length) {
         const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!';
         let result = '';
         for (let i = 0; i < length; i += 1) {
@@ -157,32 +163,35 @@ class crossSiteConsent {
         console.log('parent messageEventSend: ' + m);
     }
     messageObserve() {
-        window.addEventListener('message', (event) => {
-            if (event.origin === this.iframeDomain) {
-                this.iframeLoaded = true;
+        const e = document.getElementById(this.iframeId);
+        if (e === null) {
+            window.addEventListener('message', (event) => {
+                if (event.origin === this.iframeDomain) {
+                    this.iframeLoaded = true;
 
-                if (event.data.message === 'load') {
-                    if (event.data.status === 'return consents') {
-                        console.log('return consents');
+                    if (event.data.message === 'load') {
+                        if (event.data.status === 'return consents') {
+                            console.log('return consents');
 
-                        const crossConsents = this.validateConsent(event.data.consents);
-                        if (crossConsents !== null) {
-                            this.setCrossConsent(crossConsents);
-                        } else {
+                            const consents = this.validateConsent(event.data.consents);
+                            if (consents !== null) {
+                                this.setCrossSiteConsent(consents);
+                            } else {
+                                this.utilityOnetrustToggle();
+                                console.log('invalid consent');
+                            }
+
+                        } else if (event.data.status === 'no consents') {
+                            console.log('no consents');
                             this.utilityOnetrustToggle();
-                            console.log('invalid consent');
+                        } else if (event.data.status === 'invalid URL params') {
+                            console.log('invalid URL params');
                         }
-                        
-                    } else if (event.data.status === 'no consents') {
-                        console.log('no consents');
-                        this.utilityOnetrustToggle();
-                    } else if (event.data.status === 'invalid URL params') {
-                        console.log('invalid URL params');
                     }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     insertIframe() {
@@ -197,12 +206,30 @@ class crossSiteConsent {
     }
 
     insertOneTrust() {
+        var oHeader = { alg: 'HS256', typ: 'JWT' };
+        // Payload
+        var oPayload = {};
+        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = 1516239022;
+        // Sign JWT, password=616161
+        var sHeader = JSON.stringify(oHeader);
+        var sPayload = JSON.stringify(oPayload);
+        var sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
+
+        window.OneTrust = {
+            dataSubjectParams: {
+                id: "test@foo.com",
+                isAnonymous: false,
+                token: sJWT,
+            }
+        };
+
+
         let b = {},
             u = {};
         u.data = {
             "base_url": "https://cdn.cookielaw.org/consent/ea1a40ca-a25d-43c5-b96a-fc66e962adac-test/otSDKStub.js",
             "data_domain_script": "ea1a40ca-a25d-43c5-b96a-fc66e962adac-test",
-            "custom_svg": ""    
+            "custom_svg": ""
         };
 
         if (!window.OneTrust && typeof (u.data['base_url']) === 'string' && u.data['base_url'] !== '' && typeof (u.data['data_domain_script']) === 'string' && u.data['data_domain_script'] !== '') {
@@ -219,10 +246,10 @@ class crossSiteConsent {
                 a.parentNode.insertBefore(d, a);
             })();
 
-            window.OptanonWrapper = () => {               
+            window.OptanonWrapper = () => {
                 this.messageObserve();
-                this.insertIframe();                
-                
+                this.insertIframe();
+
                 setTimeout(() => {
                     if (this.iframeLoaded === false) {
                         console.log('consents iframe has not responded within two seconds');
@@ -243,28 +270,32 @@ class crossSiteConsent {
 
     utilityOnetrustToggle() {
         const consent = this.getLocalConsent();
-        if (consent?.visitid !== '' && this.visitid !== '' && consent?.visitid === this.visitid) {
-            
+        if (consent?.tealium_session_id !== '' && this.tealium_session_id !== '' && consent?.tealium_session_id === this.tealium_session_id) {
+
             console.log('utilityOnetrustToggle: current');
         } else {
-            
+
             window?.OneTrust?.ToggleInfoDisplay();
             console.log('utilityOnetrustToggle: new');
         }
     }
 
-    kafkaSendConsent() {
-        const te = JSON.stringify({
-            tealium_account: 'success-nikita-chtcheglov',
-            tealium_profile: 'orange-sandbox',
-            consent_event: 'decline_consent',
-            tealium_event: 'configure_consent',
-            tealium_visitor_id: utag.data["cp.utag_main_v_id"],
-        });
+    kafkaSendConsent(consents = {}, consent_type) {
+        if (this.tealium_account !== '' && this.tealium_profile !== '') {
+            const te = JSON.stringify({
+                tealium_account: this.tealium_account,
+                tealium_profile: this.tealium_profile,
+                consent_event: consent_type,
+                tealium_event: 'set_consent',
+                tealium_visitor_id: this.tealium_visitor_id,
+                tealium_session_id: this.tealium_session_id,
+                consents: consents,
+            });
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://collect.tealiumiq.com/event");
-        xhr.send(te);
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "https://collect.tealiumiq.com/event");
+            xhr.send(te);
+        }
     }
 
     main() {
