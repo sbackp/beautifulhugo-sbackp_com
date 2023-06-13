@@ -7,7 +7,7 @@ Or you can delete these file if you don't need it.
 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jsrsasign/8.0.20/jsrsasign-all-min.js"></script> 
   <script>
-class crossSiteConsent {
+class CrossSiteConsent {
     constructor(cspId, cspWebsites) {
         this.cspId = cspId;
         this.cspWebsites = cspWebsites;
@@ -209,7 +209,7 @@ class crossSiteConsent {
         var oHeader = { alg: 'HS256', typ: 'JWT' };
         // Payload
         var oPayload = {};
-        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = 1516239022;
+        oPayload.sub = "test@foo.com"; oPayload.name = 'John Doe'; oPayload.iat = this.timestamp;
         // Sign JWT, password=616161
         var sHeader = JSON.stringify(oHeader);
         var sPayload = JSON.stringify(oPayload);
@@ -305,8 +305,8 @@ class crossSiteConsent {
     }
 }
 
-const t = new crossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
-t.main();
+const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
+crossSiteConsent.main();
 
 
   </script>
