@@ -222,7 +222,7 @@ class CrossSiteConsent {
                 const sPayload = JSON.stringify(oPayload);
                 const sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, "E6A781EEFCB76F1FDA84CA42BEE91");
 
-                window.OneTrust = {
+                var OneTrust = {
                     dataSubjectParams: {
                         id: "12341234",
                         isAnonymous: false,
