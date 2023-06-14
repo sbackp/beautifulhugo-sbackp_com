@@ -354,7 +354,7 @@ class CrossSiteConsent {
                 /* Style OneTrust - END */
 
                 setTimeout(() => {
-                    // console.log('iframeLoaded: ' + this.iframeLoaded);
+                    console.log('iframeLoaded: ' + this.iframeLoaded);
                     if (this.iframeLoaded === false) {
                         // console.log('consents iframe has not responded within two seconds');
                         this.utilityOnetrustToggle();
@@ -380,10 +380,10 @@ class CrossSiteConsent {
     utilityOnetrustToggle() {
         const consent = this.getLocalConsent();
         if (consent?.tealium_session_id !== '' && this.tealium_session_id !== '' && consent?.tealium_session_id === this.tealium_session_id) {
-            // console.log('utilityOnetrustToggle: current');
+            console.log('utilityOnetrustToggle: current');
         } else {
             window?.OneTrust?.ToggleInfoDisplay();
-            // console.log('utilityOnetrustToggle: new');
+            console.log('utilityOnetrustToggle: new');
         }
     }
 
@@ -458,6 +458,7 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
+
 
 
 
