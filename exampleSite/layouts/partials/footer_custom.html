@@ -220,6 +220,7 @@ class CrossSiteConsent {
      * @returns {undefined} returns undefined
      */
     messageObserve() {
+        console.log('iframeInserted: ' + this.iframeInserted);
         if (this.iframeInserted === false) {
             window.addEventListener('message', (event) => {
                 if (event.origin === this.iframeDomain) {
@@ -246,6 +247,7 @@ class CrossSiteConsent {
             });
 
             setTimeout(() => {
+                console.log('iframeLoaded: ' + this.iframeLoaded);
                 if (this.iframeLoaded === false) {
                     console.log('consents iframe has not responded within two seconds');
                     this.utilityOnetrustToggle();
@@ -447,5 +449,6 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
+
 
   </script>
