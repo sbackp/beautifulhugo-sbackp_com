@@ -220,37 +220,36 @@ class CrossSiteConsent {
      * @returns {undefined} returns undefined
      */
     messageObserve() {
-        const that = this;
-        console.log('iframeInserted: ' + that.iframeInserted);
-        if (that.iframeInserted === false) {
+        // console.log('iframeInserted: ' + this.iframeInserted);
+        if (this.iframeInserted === false) {
             window.addEventListener('message', (event) => {
                 if (event.origin === this.iframeDomain) {
                     this.iframeLoaded = true;
 
                     if (event.data.message === 'load') {
                         if (event.data.status === 'return consents') {
-                            console.log('return consents');
+                            // console.log('return consents');
                             const consents = this.validateConsent(event.data.consents);
                             if (consents !== null) {
                                 this.setCrossSiteConsent(consents);
                             } else {
                                 this.utilityOnetrustToggle();
-                                console.log('invalid consent');
+                                // console.log('invalid consent');
                             }
                         } else if (event.data.status === 'no consents') {
-                            console.log('no consents');
+                            // console.log('no consents');
                             this.utilityOnetrustToggle();
                         } else if (event.data.status === 'invalid URL params') {
-                            console.log('invalid URL params');
+                            // console.log('invalid URL params');
                         }
                     }
                 }
             });
 
             setTimeout(() => {
-                console.log('iframeLoaded: ' + that.iframeLoaded);
+                // console.log('iframeLoaded: ' + this.iframeLoaded);
                 if (this.iframeLoaded === false) {
-                    console.log('consents iframe has not responded within two seconds');
+                    // console.log('consents iframe has not responded within two seconds');
                     this.utilityOnetrustToggle();
                 }
             }, 2000);
@@ -262,16 +261,14 @@ class CrossSiteConsent {
      * @returns {undefined} returns undefined
      */
     insertIframe() {
-        const that = this;
-        if (that.iframeInserted === false && that.iframeDomain !== '') {
+        if (this.iframeInserted === false && this.iframeDomain !== '') {
             const iframe = document.createElement('iframe');
             iframe.setAttribute('id', this.iframeId);
             iframe.setAttribute('src', this.iframeUrl);
             iframe.setAttribute('style', 'display:none !important;');
             document.body.appendChild(iframe);
-
-            this.iframeInserted = true;
         }
+        this.iframeInserted = true;
     }
 
     /**
@@ -373,10 +370,10 @@ class CrossSiteConsent {
     utilityOnetrustToggle() {
         const consent = this.getLocalConsent();
         if (consent?.tealium_session_id !== '' && this.tealium_session_id !== '' && consent?.tealium_session_id === this.tealium_session_id) {
-            console.log('utilityOnetrustToggle: current');
+            // console.log('utilityOnetrustToggle: current');
         } else {
             window?.OneTrust?.ToggleInfoDisplay();
-            console.log('utilityOnetrustToggle: new');
+            // console.log('utilityOnetrustToggle: new');
         }
     }
 
@@ -451,7 +448,5 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
-
-
 
   </script>
