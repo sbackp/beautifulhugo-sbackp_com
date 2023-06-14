@@ -354,7 +354,9 @@ class CrossSiteConsent {
                 /* Style OneTrust - END */
 
                 setTimeout(() => {
-                    // console.log('iframeLoaded: ' + this.iframeLoaded);
+                    const that = this;
+                    console.log('iframeLoaded: ' + this.iframeLoaded);
+                    console.log('iframeLoaded: ' + that.iframeLoaded);
                     if (this.iframeLoaded === false) {
                         // console.log('consents iframe has not responded within two seconds');
                         this.utilityOnetrustToggle();
