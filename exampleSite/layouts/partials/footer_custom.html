@@ -354,13 +354,12 @@ class CrossSiteConsent {
                 /* Style OneTrust - END */
 
                 setTimeout(() => {
-                    const that = this;
                     console.log('iframeLoaded: ' + this.iframeLoaded);
-                    console.log('iframeLoaded: ' + that.iframeLoaded);
                     if (this.iframeLoaded === false) {
                         // console.log('consents iframe has not responded within two seconds');
                         this.utilityOnetrustToggle();
                     }
+                    this.iframeLoaded = true;
                 }, 2000);
 
                 window?.OneTrust?.OnConsentChanged(() => {
