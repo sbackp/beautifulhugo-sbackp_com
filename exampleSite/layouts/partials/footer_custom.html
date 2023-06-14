@@ -353,14 +353,16 @@ class CrossSiteConsent {
                 e();
                 /* Style OneTrust - END */
 
-                setTimeout(() => {
-                    console.log('iframeLoaded: ' + this.iframeLoaded);
-                    if (this.iframeLoaded === false) {
-                        // console.log('consents iframe has not responded within two seconds');
-                        this.utilityOnetrustToggle();
-                    }
-                    this.iframeLoaded = true;
-                }, 2000);
+                if (this.iframeLoaded === false) {
+                    setTimeout(() => {
+                        // console.log('iframeLoaded: ' + this.iframeLoaded);
+                        if (this.iframeLoaded === false) {
+                            // console.log('consents iframe has not responded within two seconds');
+                            this.utilityOnetrustToggle();
+                        }
+                        this.iframeLoaded === true;
+                    }, 2000);
+                }
 
                 window?.OneTrust?.OnConsentChanged(() => {
                     const that = this;
@@ -458,5 +460,6 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
+
 
   </script>
