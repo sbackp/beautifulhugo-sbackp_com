@@ -227,19 +227,19 @@ class CrossSiteConsent {
 
                     if (event.data.message === 'load') {
                         if (event.data.status === 'return consents') {
-                            // console.log('return consents');
+                            console.log('return consents');
                             const consents = this.validateConsent(event.data.consents);
                             if (consents !== null) {
                                 this.setCrossSiteConsent(consents);
                             } else {
                                 this.utilityOnetrustToggle();
-                                // console.log('invalid consent');
+                                console.log('invalid consent');
                             }
                         } else if (event.data.status === 'no consents') {
-                            // console.log('no consents');
+                            console.log('no consents');
                             this.utilityOnetrustToggle();
                         } else if (event.data.status === 'invalid URL params') {
-                            // console.log('invalid URL params');
+                            console.log('invalid URL params');
                         }
                     }
                 }
@@ -247,7 +247,7 @@ class CrossSiteConsent {
 
             setTimeout(() => {
                 if (this.iframeLoaded === false) {
-                    // console.log('consents iframe has not responded within two seconds');
+                    console.log('consents iframe has not responded within two seconds');
                     this.utilityOnetrustToggle();
                 }
             }, 2000);
@@ -297,8 +297,6 @@ class CrossSiteConsent {
             window.OptanonWrapper = () => {
                 this.messageObserve();
                 this.insertIframe();
-
-                
 
                 /* Style OneTrust - Start */
                 function otInsertBrandImage(imagePath, imageType) {
@@ -371,10 +369,10 @@ class CrossSiteConsent {
     utilityOnetrustToggle() {
         const consent = this.getLocalConsent();
         if (consent?.tealium_session_id !== '' && this.tealium_session_id !== '' && consent?.tealium_session_id === this.tealium_session_id) {
-            // console.log('utilityOnetrustToggle: current');
+            console.log('utilityOnetrustToggle: current');
         } else {
             window?.OneTrust?.ToggleInfoDisplay();
-            // console.log('utilityOnetrustToggle: new');
+            console.log('utilityOnetrustToggle: new');
         }
     }
 
@@ -449,7 +447,5 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
-
-
 
   </script>
