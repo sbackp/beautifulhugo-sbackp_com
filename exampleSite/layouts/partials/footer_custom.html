@@ -13,7 +13,7 @@ class CrossSiteConsent {
         this.cspExpDays = 182;
         this.iframeLoaded = false;
         this.iframeId = 'onetrustCrossSiteConsent';
-        this.iframeDomain = '';
+        this.iframeDomain = 'https://idyllic-kulfi-7c87be.netlify.app';
         this.consentsList = {
             C0001: ['necessary', 'cookie_consent_necessary_bool'],
             C0003: ['personalization', 'cookie_consent_personalization_bool'],
@@ -244,6 +244,13 @@ class CrossSiteConsent {
                     }
                 }
             });
+
+            setTimeout(() => {
+                if (this.iframeLoaded === false) {
+                    // console.log('consents iframe has not responded within two seconds');
+                    this.utilityOnetrustToggle();
+                }
+            }, 2000);
         }
     }
 
@@ -291,12 +298,7 @@ class CrossSiteConsent {
                 this.messageObserve();
                 this.insertIframe();
 
-                setTimeout(() => {
-                    if (this.iframeLoaded === false) {
-                        // console.log('consents iframe has not responded within two seconds');
-                        this.utilityOnetrustToggle();
-                    }
-                }, 2000);
+                
 
                 /* Style OneTrust - Start */
                 function otInsertBrandImage(imagePath, imageType) {
