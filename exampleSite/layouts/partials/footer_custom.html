@@ -13,7 +13,7 @@ class CrossSiteConsent {
         this.cspExpDays = 182;
         this.iframeLoaded = false;
         this.iframeId = 'onetrustCrossSiteConsent';
-        this.iframeDomain = '';
+        this.iframeDomain = 'https://idyllic-kulfi-7c87be.netlify.app';
         this.consentsList = {
             C0001: ['necessary', 'cookie_consent_necessary_bool'],
             C0003: ['personalization', 'cookie_consent_personalization_bool'],
@@ -252,7 +252,7 @@ class CrossSiteConsent {
      * @returns {undefined} returns undefined
      */
     insertIframe() {
-        if (this.iframeInserted === false) {
+        if (this.iframeInserted === false && this.iframeDomain !== '') {
             const iframe = document.createElement('iframe');
             iframe.setAttribute('id', this.iframeId);
             iframe.setAttribute('src', this.iframeUrl);
@@ -447,5 +447,6 @@ class CrossSiteConsent {
 
 const crossSiteConsent = new CrossSiteConsent('123123', ['sbackp.com', 'sbackp.dk', 'tryg.dk']);
 crossSiteConsent.main();
+
 
   </script>
