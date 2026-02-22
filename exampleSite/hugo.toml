@@ -1,15 +1,26 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
+<<<<<<< HEAD:exampleSite/config.toml
 title = "SBACKP"
+=======
+title = "Beautiful Hugo"
+# Using theme as git submodule
+>>>>>>> upstream/master:exampleSite/hugo.toml
 theme = "beautifulhugo"
+# Or when using theme as hugo module
+# theme = "github.com/halogenica/beautifulhugo"
 pygmentsStyle = "trac"
 pygmentsUseClasses = true
 pygmentsCodeFences = true
 pygmentsCodefencesGuessSyntax = true
 #pygmentsUseClassic = true
 #pygmentOptions = "linenos=inline"
-#disqusShortname = "XXX"
-#googleAnalytics = "XXX"
+
+[Services]
+  [Services.Disqus]
+    # Shortname = "XXX"
+  [Services.googleAnalytics]
+    # id = "XXX"
 
 [Params]
   homeTitle = "Web Analytics and MarTech" # Set a different text for the header on the home page
@@ -27,10 +38,15 @@ pygmentsCodefencesGuessSyntax = true
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
+<<<<<<< HEAD:exampleSite/config.toml
   since = "2023"
   baseURL = "https://sbackp.com"
+=======
+#  cusdisID = "XXX" # Get your App id from cusdis.com
+>>>>>>> upstream/master:exampleSite/hugo.toml
 #  hideAuthor = true
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
+#  disclaimerText = "The opinions expressed herein are my own personal opinions and do not represent my employer’s view in any way."
 
 #[[Params.bigimg]]
 #  src = "img/triangle.jpg"
@@ -44,7 +60,7 @@ pygmentsCodefencesGuessSyntax = true
 #  src = "img/hexagon.jpg"
 #  desc = "Hexagon"
 
-[Author]
+[Params.author]
   # Set only your "username" for default hosts and full URLs otherwise (e.g., "https://MyGitLab.org/username")
   name = "SBACKP"
   website = "https://sbackp.com"
@@ -74,8 +90,11 @@ pygmentsCodefencesGuessSyntax = true
   kaggle = "username"
   weibo = "username"
   slack = "username"
+  medium = "username"
   discord = "invite code (https://discord.gg/XXXXXXX)"
   strava = "userid"
+  lastfm = "username"
+  bluesky = "username"
 
 [[menu.main]]
     name = "Blog"

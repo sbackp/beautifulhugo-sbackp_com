@@ -4,7 +4,11 @@
     <ul class="share">
       <!-- Twitter -->
       <li>
+<<<<<<< HEAD
         <a href="//twitter.com/share?url={{ .Site.Params.baseURL }}{{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Author.twitter }}" target="_blank" title="Share on Twitter">
+=======
+        <a href="//twitter.com/share?url={{ .Permalink }}&amp;text={{ .Title }}&amp;via={{ .Site.Params.author.twitter }}" target="_blank" title="Share on Twitter">
+>>>>>>> upstream/master
           <i class="fab fa-twitter"></i>
         </a>
       </li>
@@ -44,7 +48,17 @@
           <i class="fab fa-pinterest"></i>
         </a>
       </li>
+<<<<<<< HEAD
       -->
+=======
+
+      <!-- Email -->
+      <li>
+        <a href="mailto:?body={{ .Permalink }}&amp;subject={{ .Title }}" title="Share via email">
+          <i class="fab fa-at"></i>
+        </a>
+      </li>
+>>>>>>> upstream/master
     </ul>
   </div>
   {{ end }}
