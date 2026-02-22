@@ -1,11 +1,7 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-<<<<<<< HEAD:exampleSite/config.toml
-title = "SBACKP"
-=======
 title = "Beautiful Hugo"
 # Using theme as git submodule
->>>>>>> upstream/master:exampleSite/hugo.toml
 theme = "beautifulhugo"
 # Or when using theme as hugo module
 # theme = "github.com/halogenica/beautifulhugo"
@@ -38,12 +34,7 @@ pygmentsCodefencesGuessSyntax = true
   socialShare = true
   delayDisqus = true
   showRelatedPosts = true
-<<<<<<< HEAD:exampleSite/config.toml
-  since = "2023"
-  baseURL = "https://sbackp.com"
-=======
 #  cusdisID = "XXX" # Get your App id from cusdis.com
->>>>>>> upstream/master:exampleSite/hugo.toml
 #  hideAuthor = true
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 #  disclaimerText = "The opinions expressed herein are my own personal opinions and do not represent my employer’s view in any way."
