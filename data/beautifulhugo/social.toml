@@ -22,13 +22,6 @@
 #title = "GitLab"
 #icon = "fab fa-gitlab"
 
-<<<<<<< HEAD
-#[[social_icons]]
-#id = "bitbucket"
-#url = "https://bitbucket.org/%s"
-#title = "Bitbucket"
-#icon = "fab fa-bitbucket"
-=======
 [[social_icons]]
 id = "git"
 url = "%s"
@@ -40,7 +33,6 @@ id = "bitbucket"
 url = "https://bitbucket.org/%s"
 title = "Bitbucket"
 icon = "fab fa-bitbucket"
->>>>>>> upstream/master
 
 [[social_icons]]
 id = "twitter"
@@ -175,19 +167,6 @@ icon = "fab fa-x-twitter"
 #title = "Weibo"
 #icon = "fab fa-weibo"
 
-<<<<<<< HEAD
-#[[social_icons]]
-#id = "discord"
-#url = "https://discord.gg/%s"
-#title = "Discord"
-#icon = "fab fa-discord"
-
-#[[social_icons]]
-#id = "strava"
-#url = "https://www.strava.com/athletes/%s"
-#title = "Strava"
-#icon = "fab fa-strava"
-=======
 [[social_icons]]
 id = "medium"
 url = "https://medium.com/@%s"
@@ -259,4 +238,3 @@ id = "goodreads"
 url = "https://goodreads.com/%s"
 title = "Goodreads"
 icon = "fab fa-goodreads"
->>>>>>> upstream/master
