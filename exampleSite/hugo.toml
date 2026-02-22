@@ -1,6 +1,6 @@
 BaseURL = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = "Beautiful Hugo"
+title = "SBACKP"
 # Using theme as git submodule
 theme = "beautifulhugo"
 # Or when using theme as hugo module
