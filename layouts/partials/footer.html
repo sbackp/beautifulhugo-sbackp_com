@@ -19,13 +19,8 @@
           {{ range .Site.Data.beautifulhugo.social.social_icons }}
             {{- if isset $.Site.Params.author .id }}
               <li>
-<<<<<<< HEAD
-		{{ if or ( hasPrefix ( index $.Site.Author .id ) "https://" ) ( hasPrefix ( index $.Site.Author .id ) "https://" ) }}
-		  <a {{ if .rel }}rel="{{ .rel }}"{{- end -}} href="{{ printf "%s" (index $.Site.Author .id) }}" title="{{ .title }}">
-=======
 		{{ if or ( hasPrefix ( index $.Site.Params.author .id ) "http://" ) ( hasPrefix ( index $.Site.Params.author .id ) "https://" ) }}
 		  <a {{ if .rel }}rel="{{ .rel }}"{{- end -}} href="{{ printf "%s" (index $.Site.Params.author .id) }}" title="{{ .title }}">
->>>>>>> upstream/master
 		{{ else }}
 		  <a {{ if .rel }}rel="{{ .rel }}"{{- end -}} href="{{ printf .url (index $.Site.Params.author .id) }}" title="{{ .title }}">
 		{{ end }}
@@ -61,13 +56,9 @@
 
           &nbsp;&bull;&nbsp;&copy;
           {{ if .Site.Params.since }}
-<<<<<<< HEAD
-            {{ .Site.Params.since }}
-=======
             {{ .Site.Params.since }} - {{ .Site.Lastmod.Format "2006" }}
           {{ else }}
             {{ .Site.Lastmod.Format "2006" }}
->>>>>>> upstream/master
           {{ end }}
 
           {{ if .Site.Title }}
