@@ -6,11 +6,9 @@ function getTMSParams() {
     }
 
     const url = new URL(currentScript.src);
-    console.log(`TMS: Current script URL - ${url.href}`);
     const params = {};
     params.pid = url.searchParams.get('pid');
     params.dl = url.searchParams.get('dl');
-    console.log(`TMS: Extracted parameters - pid: ${params.pid}, dl: ${params.dl}`);
 
     if (!params.pid) {
         console.error('TMS: Profile ID (pid) parameter not found in script URL');
@@ -39,6 +37,8 @@ function initializeTMS(dl) {
 
     const processEvent = (event) => {
         tmsConfigs.tags.forEach(tag => {
+            console.log(`TMS: Processing event trigger '${event.trigger}'`);
+            console.log(`TMS: Checking tag event '${event}'`);
             if (tag.triggger.event === event) {
                 injectTag(tag.url, tag.id);
             }
@@ -81,12 +81,8 @@ function initializeTMS(dl) {
 const { pid, dl } = getTMSParams();
 console.log(`TMS: Retrieved parameters - Profile ID: ${pid}, Data Layer: ${dl}`);
 if (pid && dl) {
-    console.log(`TMS: Initializing with profile ID ${pid}`);
-
     // Example: Load TMS configuration based on TMS profile ID (pid)
 
     // For demonstration, we will call initializeTMS with the data layer name from the script URL
-    if (dl) {
-        initializeTMS(dl);
-    }
+    initializeTMS(dl);
 }
