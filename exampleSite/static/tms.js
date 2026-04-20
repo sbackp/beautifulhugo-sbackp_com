@@ -60,7 +60,7 @@ function initializeTMS(dL, tmsConfigs) {
     };
 
     // Initialize: Process any existing events
-    w[dl].forEach(event => { 
+    w[dL].forEach(event => { 
         processEvent(event);
     });
 }
