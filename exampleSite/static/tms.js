@@ -1,70 +1,58 @@
-function getTMSParams() {    
-    const currentScript = document.currentScript;
-    if (!currentScript || !currentScript.src) {
-        console.error('TMS: Unable to determine script source');
+const tmsConfigs = {
+        tags: [{
+                'id': 'tms001',
+                'url': 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
+                'trigger': { event: 'pageview' }
+            },
+            {
+                'id': 'tms002',
+                'script': 'https://connect.facebook.net/en_US/fbevents.js',
+                'trigger': { event: 'purchase' }
+            }]
+    };
+
+function getTMSParams() {
+    try {
+        const currentScript = document.currentScript;
+        if (currentScript && currentScript.src) {
+            const url = new URL(currentScript.src);
+            const params = {};
+            params.pid = url.searchParams.get('pid');
+            params.dL = url.searchParams.get('dL');
+
+            if (params.pid && params.dL) {
+                return params;
+            } else {
+                return {};
+            }
+        }
+    } catch (error) {
         return {};
     }
-
-    const url = new URL(currentScript.src);
-    const params = {};
-    params.pid = url.searchParams.get('pid');
-    params.dl = url.searchParams.get('dl');
-
-    if (!params.pid) {
-        console.error('TMS: Profile ID (pid) parameter not found in script URL');
-        return {};
-    }
-    if (!params.dl) {
-        console.error('TMS: Data layer name (dl) parameter not found in script URL');
-        return {};
-    }
-
-    return params;
 }
 
-function initializeTMS(dl) {
+function initializeTMS(dL, tmsConfigs) {
     const injectTag = (url, id) => {
         const s = document.createElement('script');
         s.src = url;
         s.id = id;
         s.async = true;
-        s.onload = () => console.log(`Tag ${id} loaded`);
-        s.onerror = () => console.error(`Tag ${id} failed to load`);
         document.head.appendChild(s);
-
-        console.log(`TMS: Injected tag ${id} with URL ${url}`);
     }
 
     const processEvent = (event) => {
         tmsConfigs.tags.forEach(tag => {
-            console.log(`TMS: Processing event trigger '${tag.triggent}'`);
-            console.log(`TMS: Checking tag event '${event}'`);
             if (tag.trigger.event === event.event) {
                 injectTag(tag.url, tag.id);
             }
         });
     }
 
-    const tmsConfigs = {
-        tags: [{
-            'id': 'tms001',
-            'url': 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-            'trigger': {
-                event: 'pageview'
-            }
-        },
-            {
-                'id': 'facebook-pixel',
-                'script': 'https://connect.facebook.net/en_US/fbevents.js',
-                'trigger': { event: 'purchase' }
-            }]
-    };
-    
     // Listen for dataLayer events
     const w = window;
-    w[dl] = w[dl] || [];
-    const originalPush = w[dl].push;
-    w[dl].push = function() {
+    w[dL] = w[dL] || [];
+    const originalPush = w[dL].push;
+    w[dL].push = function() {
         // add timestamp to the pushed event
         Object.assign(arguments[0], { 'tms.event.ts': new Date().getTime() });
         originalPush.apply(w[dl], arguments);
@@ -77,12 +65,7 @@ function initializeTMS(dl) {
     });
 }
 
-// Your TMS initialization logic here using the profileId
-const { pid, dl } = getTMSParams();
-console.log(`TMS: Retrieved parameters - Profile ID: ${pid}, Data Layer: ${dl}`);
-if (pid && dl) {
-    // Example: Load TMS configuration based on TMS profile ID (pid)
 
-    // For demonstration, we will call initializeTMS with the data layer name from the script URL
-    initializeTMS(dl);
-}
+// Your TMS initialization logic here using the profileId
+const { pid, dL } = getTMSParams();
+initializeTMS(dL, tmsConfigs);
