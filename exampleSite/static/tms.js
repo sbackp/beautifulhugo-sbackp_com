@@ -37,9 +37,9 @@ function initializeTMS(dl) {
 
     const processEvent = (event) => {
         tmsConfigs.tags.forEach(tag => {
-            console.log(`TMS: Processing event trigger '${event.trigger}'`);
+            console.log(`TMS: Processing event trigger '${tag.triggent}'`);
             console.log(`TMS: Checking tag event '${event}'`);
-            if (tag.triggger.event === event) {
+            if (tag.trigger.event === event.event) {
                 injectTag(tag.url, tag.id);
             }
         });
@@ -49,14 +49,14 @@ function initializeTMS(dl) {
         tags: [{
             'id': 'tms001',
             'url': 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-            'triggger': {
+            'trigger': {
                 event: 'pageview'
             }
         },
             {
-                id: 'facebook-pixel',
-                script: 'https://connect.facebook.net/en_US/fbevents.js',
-                trigger: { event: 'purchase' }
+                'id': 'facebook-pixel',
+                'script': 'https://connect.facebook.net/en_US/fbevents.js',
+                'trigger': { event: 'purchase' }
             }]
     };
     
