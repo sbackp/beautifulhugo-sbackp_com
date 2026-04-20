@@ -18,7 +18,7 @@ function getTMSParams() {
             const url = new URL(currentScript.src);
             const params = {};
             params.pid = url.searchParams.get('pid');
-            params.dL = url.searchParams.get('dL');
+            params.dL = url.searchParams.get('dl');
 
             if (params.pid && params.dL) {
                 return params;
