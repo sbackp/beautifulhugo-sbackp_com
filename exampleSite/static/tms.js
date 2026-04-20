@@ -54,6 +54,9 @@ function initializeTMS(dL, tmsConfigs) {
     });
 }
 
+function dLEvent(dL, e) {
+    window[dL].push({ 'tms.event.ts': new Date().getTime(), event: e });
+}
 
 // Your TMS initialization logic here using the profileId
 const { pid, dL } = getTMSParams();
@@ -76,16 +79,21 @@ if (pid && dL) {
     initializeTMS(dL, tmsConfigs);
 
     // push start event to data layer when TMS profile (pid) script has loaded successfully on the webpage
-    window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.start' });
+    dLEvent(dL, 'tms.start');
         
-    // push DOM ready event after load event and when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-        window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.dom_ready' });
-    });
+    // Push DOM ready event after load event and when DOM is ready. 
+    // Push if DOM ready event has already occured
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', dLEvent(dL, 'tms.dom_ready'));
+    } else {
+        dLEvent(dL, 'tms.dom_ready');
+    }
 
-    // push loaded event to data layer when webpage has finished loading
-    window.addEventListener('load', () => {
-        window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.loaded' });
-    });
-
+    // Push loaded event to data layer when webpage has finished loading
+    // Push if load event has already occured
+    if (document.readyState === 'complete') {
+        dLEvent(dL, 'tms.loaded');
+    } else {
+        document.addEventListener('load', dLEvent(dL, 'tms.loaded'));
+    }
 }
