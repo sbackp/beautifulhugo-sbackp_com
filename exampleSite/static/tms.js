@@ -55,7 +55,7 @@ function initializeTMS(dL, tmsConfigs) {
     w[dL].push = function() {
         // add timestamp to the pushed event
         Object.assign(arguments[0], { 'tms.event.ts': new Date().getTime() });
-        originalPush.apply(w[dl], arguments);
+        originalPush.apply(w[dL], arguments);
         processEvent(arguments[0]);
     };
 
