@@ -1,6 +1,4 @@
-function getTMSParams() {
-    const params = {};
-    
+function getTMSParams() {    
     const currentScript = document.currentScript;
     if (!currentScript || !currentScript.src) {
         console.error('TMS: Unable to determine script source');
@@ -8,8 +6,11 @@ function getTMSParams() {
     }
 
     const url = new URL(currentScript.src);
+    console.log(`TMS: Current script URL - ${url.href}`);
+    const params = {};
     params.pid = url.searchParams.get('pid');
     params.dl = url.searchParams.get('dl');
+    console.log(`TMS: Extracted parameters - pid: ${params.pid}, dl: ${params.dl}`);
 
     if (!params.pid) {
         console.error('TMS: Profile ID (pid) parameter not found in script URL');
