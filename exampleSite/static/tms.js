@@ -1,23 +1,30 @@
-function getProfileId() {
+function getTMSParams() {
+    const params = {};
+    
     const currentScript = document.currentScript;
     if (!currentScript || !currentScript.src) {
         console.error('TMS: Unable to determine script source');
-        return null;
+        return {};
     }
 
     const url = new URL(currentScript.src);
-    const profileId = url.searchParams.get('pid');
-    
-    if (!profileId) {
+    params.pid = url.searchParams.get('pid');
+    params.dl = url.searchParams.get('dl');
+
+    if (!params.pid) {
         console.error('TMS: Profile ID (pid) parameter not found in script URL');
-        return null;
+        return {};
+    }
+    if (!params.dl) {
+        console.error('TMS: Data layer name (dl) parameter not found in script URL');
+        return {};
     }
 
-    return profileId;
+    return params;
 }
 
-((dl, pid) => {
-    function injectTag(url, id) {
+function initializeTMS(dl) {
+    const injectTag = (url, id) => {
         const s = document.createElement('script');
         s.src = url;
         s.id = id;
@@ -29,7 +36,7 @@ function getProfileId() {
         console.log(`TMS: Injected tag ${id} with URL ${url}`);
     }
 
-    function processEvent(event) {
+    const processEvent = (event) => {
         tmsConfigs.tags.forEach(tag => {
             if (tag.triggger.event === event.event) {
                 injectTag(tag.url, tag.id);
@@ -44,7 +51,12 @@ function getProfileId() {
             'triggger': {
                 event: 'pageview'
             }
-        }]
+        },
+            {
+                id: 'facebook-pixel',
+                script: 'https://connect.facebook.net/en_US/fbevents.js',
+                trigger: { event: 'purchase' }
+            }]
     };
     
     // Listen for dataLayer events
@@ -59,11 +71,20 @@ function getProfileId() {
     };
 
     // Initialize: Process any existing events
-    window.tmsDL.forEach(event => { 
+    w[dl].forEach(event => { 
         processEvent(event);
     });
-    
-    // Your TMS initialization logic here using the profileId
-    // Example: Load configuration based on profileId
-    // initializeTMS(profileId);
-})('tmsDL', getProfileId());
+}
+
+// Your TMS initialization logic here using the profileId
+const { pid, dl } = getTMSParams();
+if (pid && dl) {
+    console.log(`TMS: Initializing with profile ID ${pid}`);
+
+    // Example: Load TMS configuration based on TMS profile ID (pid)
+
+    // For demonstration, we will call initializeTMS with the data layer name from the script URL
+    if (dl) {
+        initializeTMS(dl);
+    }
+}
