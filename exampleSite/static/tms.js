@@ -1,16 +1,3 @@
-const tmsConfigs = {
-        tags: [{
-                'id': 'tms001',
-                'url': 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
-                'trigger': { event: 'pageview' }
-            },
-            {
-                'id': 'tms002',
-                'script': 'https://connect.facebook.net/en_US/fbevents.js',
-                'trigger': { event: 'purchase' }
-            }]
-    };
-
 function getTMSParams() {
     try {
         const currentScript = document.currentScript;
@@ -70,5 +57,35 @@ function initializeTMS(dL, tmsConfigs) {
 
 // Your TMS initialization logic here using the profileId
 const { pid, dL } = getTMSParams();
-console.log(`TMS: ${dL}`);
-initializeTMS(dL, tmsConfigs);
+
+if (pid && dL) {
+    // Get TMS configuration based on TMS profile ID (pid) - For demo, using static config
+    const tmsConfigs = {
+        tags: [{
+                'id': 'tms001',
+                'url': 'https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID',
+                'trigger': { event: 'pageview', location_hostname_contains: 'sbackp.com', location_path_equals: '/' }
+            },
+            {
+                'id': 'tms002',
+                'script': 'https://connect.facebook.net/en_US/fbevents.js',
+                'trigger': { event: 'purchase' }
+            }]
+    };
+    
+    initializeTMS(dL, tmsConfigs);
+
+    // push start event to data layer when TMS profile (pid) script has loaded successfully on the webpage
+    window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.start' });
+        
+    // push DOM ready event after load event and when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+        window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.dom_ready' });
+    });
+
+    // push loaded event to data layer when webpage has finished loading
+    window.addEventListener('load', () => {
+        window[dL].push({ 'tms.event.ts': new Date().getTime(), event: 'tms.loaded' });
+    });
+
+}
