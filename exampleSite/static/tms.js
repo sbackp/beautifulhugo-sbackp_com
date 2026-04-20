@@ -35,8 +35,6 @@ function initializeTMS(dL, tmsConfigs) {
                 injectTag(tag.url, tag.id);
             }
         });
-
-        dLEvent(dL, 'tms.event_queue_processed');
     }
 
     // Listen for dataLayer events
