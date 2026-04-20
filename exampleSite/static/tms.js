@@ -38,7 +38,7 @@ function initializeTMS(dl) {
 
     const processEvent = (event) => {
         tmsConfigs.tags.forEach(tag => {
-            if (tag.triggger.event === event.event) {
+            if (tag.triggger.event === event) {
                 injectTag(tag.url, tag.id);
             }
         });
