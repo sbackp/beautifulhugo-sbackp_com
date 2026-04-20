@@ -33,11 +33,13 @@ function getTMSParams() {
 
 function initializeTMS(dL, tmsConfigs) {
     const injectTag = (url, id) => {
-        const s = document.createElement('script');
+        const d = document,
+            s = d.createElement('script'),
+            t = d.head || d.getElementsByTagName('head')[0] || d.documentElement;
         s.src = url;
         s.id = id;
         s.async = true;
-        document.head.appendChild(s);
+        t.appendChild(s);
     }
 
     const processEvent = (event) => {
