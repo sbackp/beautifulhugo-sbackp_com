@@ -68,4 +68,5 @@ function initializeTMS(dL, tmsConfigs) {
 
 // Your TMS initialization logic here using the profileId
 const { pid, dL } = getTMSParams();
+console.log(`TMS: ${dL}`);
 initializeTMS(dL, tmsConfigs);
