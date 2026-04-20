@@ -53,7 +53,7 @@ function getProfileId() {
     const originalPush = w[dl].push;
     w[dl].push = function() {
         // add timestamp to the pushed event
-        Object.assign({ 'tms.event.ts': new Date().getTime() }, arguments[0]);
+        Object.assign(arguments[0], { 'tms.event.ts': new Date().getTime() });
         originalPush.apply(w[dl], arguments);
         processEvent(arguments[0]);
     };
