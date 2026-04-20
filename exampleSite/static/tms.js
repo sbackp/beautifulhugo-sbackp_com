@@ -78,6 +78,7 @@ function initializeTMS(dl) {
 
 // Your TMS initialization logic here using the profileId
 const { pid, dl } = getTMSParams();
+console.log(`TMS: Retrieved parameters - Profile ID: ${pid}, Data Layer: ${dl}`);
 if (pid && dl) {
     console.log(`TMS: Initializing with profile ID ${pid}`);
 
