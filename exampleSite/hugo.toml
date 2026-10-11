@@ -55,7 +55,6 @@ enableGitInfo = true
 #     includes = ["**"]
 
 [Params]
-  homeTitle = "Web Analytics and MarTech" # Set a different text for the header on the home page
   subtitle = "Half thought-out ideas to made up problems"
   mainSections = ["post", "recipe"]
   logo = "/img/avator-favicon-stag.png" # Expecting square dimensions
