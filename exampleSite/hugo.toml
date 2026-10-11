@@ -1,7 +1,7 @@
 # This gets overridden when building for production
-baseurl = "http://localhost:1313/"
+baseurl = "https://sbackp.com"
 DefaultContentLanguage = "en"
-title = "Beautiful Hugo"
+title = "SBACKP"
 enableGitInfo = true
 
 [[module.imports]]
@@ -55,7 +55,7 @@ enableGitInfo = true
 #     includes = ["**"]
 
 [Params]
-  subtitle = "Build a beautiful and simple website in minutes"
+  subtitle = "Half thought-out ideas to made up problems"
   mainSections = ["post", "recipe"]
   logo = "/img/avatar-icon.png" # Expecting square dimensions
   favicon = "/img/favicon.ico"
@@ -94,12 +94,12 @@ enableGitInfo = true
 # For AI search summary limits, see [Params.seo] in the SEO & i18n docs.
 
 [Params.author]
-  name = "Some Person"
-  website = "yourwebsite.com"
-  email = "youremail@domain.com"
-  github = "halogenica/beautifulhugo"
-  twitter = "username"
-  linkedin = "in/username" # company/username
+  name = "SBACKP"
+  website = "https://sbackp.com"
+  email = "sbackp@gmail.com"
+  github = "sbackp"
+  twitter = "sbackp"
+  linkedin = "in/sbackp" # company/username
 
 # Any platform the built-in registry does not cover. "icon" is a CSS class,
 # so a site can also load its own icon font from head_custom.html.
