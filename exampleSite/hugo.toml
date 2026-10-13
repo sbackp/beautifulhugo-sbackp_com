@@ -78,6 +78,8 @@ enableGitInfo = true
   sourceRepo = "https://github.com/halogenica/beautifulhugo/blob/master/exampleSite/"
   since = 2023
   showPostNav = true
+  toc = true
+  hideAuthor = true
 
   [Params.search]
     provider = "fuse"
@@ -105,7 +107,7 @@ enableGitInfo = true
   email = "sbackp@gmail.com"
   github = "sbackp"
   twitter = "sbackp"
-  linkedin = "in/sbackp" # company/username
+  linkedin = "sbackp" # company/username
 
 # Any platform the built-in registry does not cover. "icon" is a CSS class,
 # so a site can also load its own icon font from head_custom.html.
