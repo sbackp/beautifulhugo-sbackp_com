@@ -78,7 +78,7 @@ enableGitInfo = true
   sourceRepo = "https://github.com/halogenica/beautifulhugo/blob/master/exampleSite/"
   since = 2023
   showPostNav = true
-  toc = true
+  toc = false
   hideAuthor = true
 
   [Params.search]
