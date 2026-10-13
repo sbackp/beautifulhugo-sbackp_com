@@ -92,7 +92,10 @@ enableGitInfo = true
   desc = "Hexagon"
 
 # For AI search summary limits, see [Params.seo] in the SEO & i18n docs.
-
+[Params.seo.robots]
+  noindex = true
+  nofollow = true
+  
 [Params.author]
   name = "SBACKP"
   website = "https://sbackp.com"
