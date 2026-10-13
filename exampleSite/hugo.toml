@@ -104,17 +104,17 @@ enableGitInfo = true
 [Params.author]
   name = "SBACKP"
   website = "https://sbackp.com"
-  email = "sbackp@gmail.com"
-  github = "sbackp"
-  twitter = "sbackp"
-  linkedin = "sbackp" # company/username
+  #email = "sbackp@gmail.com"
+  #github = "sbackp"
+  #twitter = "sbackp"
+  #linkedin = "sbackp" # company/username
 
 # Any platform the built-in registry does not cover. "icon" is a CSS class,
 # so a site can also load its own icon font from head_custom.html.
-[[Params.author.custom]]
-  href = "https://matrix.to/#/@username:example.org"
-  title = "Matrix"
-  icon = "fas fa-comments"
+#[[Params.author.custom]]
+#  href = "https://matrix.to/#/@username:example.org"
+#  title = "Matrix"
+#  icon = "fas fa-comments"
 
 [markup.highlight]
   noClasses = false
