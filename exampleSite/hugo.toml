@@ -19,7 +19,7 @@ enableGitInfo = true
   [Services.Disqus]
     # Shortname = "XXX"
   [Services.googleAnalytics]
-    # id = "XXX"
+    id = "G-9J06S5426H"
 
 [taxonomies]
   category = "categories"
