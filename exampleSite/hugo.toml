@@ -76,6 +76,7 @@ enableGitInfo = true
   headerImgStyle = "narrow"
   showSource = true
   sourceRepo = "https://github.com/halogenica/beautifulhugo/blob/master/exampleSite/"
+  since = 2023
 
   [Params.search]
     provider = "fuse"
