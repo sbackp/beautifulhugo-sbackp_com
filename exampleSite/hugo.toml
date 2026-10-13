@@ -93,6 +93,7 @@ enableGitInfo = true
 
 # For AI search summary limits, see [Params.seo] in the SEO & i18n docs.
 [Params.seo.robots]
+  ai-summary-limit = "nosnippet"
   noindex = true
   nofollow = true
   
