@@ -55,7 +55,7 @@ enableGitInfo = true
 #     includes = ["**"]
 
 [Params]
-  subtitle = "Half thought-out ideas to made up problems"
+  subtitle = "Half thought-out solutions to made-up problems"
   mainSections = ["post", "recipe"]
   logo = "/img/avator-favicon-stag.png" # Expecting square dimensions
   favicon = "/img/favicon.ico"
